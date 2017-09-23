@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity PokerVotes.
+    -->
+    <changeSet id="20170408085857-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="j_user_id"
+                                 baseTableName="poker_votes"
+                                 constraintName="fk_poker_votes_j_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="poker_id"
+                                 baseTableName="poker_votes"
+                                 constraintName="fk_poker_votes_poker_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="poker"/>
+
+    </changeSet>
+</databaseChangeLog>

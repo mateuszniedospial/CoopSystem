@@ -1,0 +1,45 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "jGroup",
+            "otherEntityName": "jGroup",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "createdDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "modifyDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "lifeCycle",
+            "fieldType": "LifeCycle",
+            "fieldValues": "ACTIVE,INACTIVE,DEPRECATED,TERMINATED"
+        }
+    ],
+    "changelogDate": "20170311112049",
+    "entityTableName": "project",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

@@ -1,0 +1,4 @@
+    <p-autoComplete [(ngModel)]="inputText" [suggestions]="results" placeholder="Search..."
+                    (completeMethod)="search($event)" [size]="size" ngDefaultControl></p-autoComplete>
+    <button (click)="onSubmitSearch()" class="btn btn-default" type="submit"><i class="fa fa-fw fa-search"></i></button>
+

@@ -1,0 +1,8 @@
+<ng-container *ngIf="jGroups">
+    <ng-container *ngIf = "selectedJGroup">
+        <select style="background-color: #2c333b; color: #afafaf; border-color: #353d47; font-weight: 400" class="form-control" [(ngModel)]="selectedJGroup" (ngModelChange)="triggerStoreJGroupID($event)">
+            <option [value]="selectedJGroup" [selected]="selected" style="display:none; ">{{selectedJGroup?.id}}: {{selectedJGroup?.name}}</option>
+            <option [ngValue]="jGroup" *ngFor="let jGroup of jGroups">{{jGroup?.id}}: {{jGroup?.name}}</option>
+        </select>
+    </ng-container>
+</ng-container>

@@ -1,0 +1,120 @@
+.poker-card {
+    float: left;
+    width: 22%;
+    margin: 1px;
+    height: 130px;
+    border: 1px solid #4c8dff;
+    border-radius: 3px;
+    color: #c53a3a;
+    font-size: 30px;
+    font-weight: 400;
+    cursor: pointer;
+    background-color: white;
+}
+
+.poker-card-min{
+    float: left;
+    width: 10%;
+    margin: 1px;
+    height: 40px;
+    border: 1px solid #4c8dff;
+    border-radius: 3px;
+    color: #c53a3a;
+    font-size: 15px;
+    font-weight: 400;
+    cursor: pointer;
+    background-color: #92adc9;
+}
+.poker-card-min.show{
+    background-color: white;
+}
+.poker-card:hover{
+    border: 1px solid #150bff;
+}
+.pk1:hover{
+    background-color: #818a91;
+    border: 1px solid #ffffff;
+}
+.pk2:hover{
+    background-color: #5bc0de;
+    border: 1px solid #ffffff;
+
+}
+.pk3:hover{
+    background-color: #0275d8;
+    border: 1px solid #ffffff;
+
+}
+.pk4:hover{
+    background-color: #5cb85c;
+    border: 1px solid #ffffff;
+
+}
+.pk5:hover{
+    border: 1px solid #ffffff;
+    background-color: #f0ad4e;
+}
+.pk6:hover{
+    background-color: #d9534f;
+    border: 1px solid #ffffff;
+}
+
+.pk1:focus{
+    background-color: #818a91;
+    border: 1px solid #ffffff;
+}
+.pk2:focus{
+    background-color: #5bc0de;
+    border: 1px solid #ffffff;
+
+}
+.pk3:focus{
+    background-color: #0275d8;
+    border: 1px solid #ffffff;
+
+}
+.pk4:focus{
+    background-color: #5cb85c;
+    border: 1px solid #ffffff;
+
+}
+.pk5:focus{
+    border: 1px solid #ffffff;
+    background-color: #f0ad4e;
+}
+.pk6:focus{
+    background-color: #d9534f;
+    border: 1px solid #ffffff;
+}
+
+.t1{
+    -webkit-box-shadow: 4px -1px 52px 16px #818a91;
+    -moz-box-shadow: 4px -1px 52px 16px #818a91;
+    box-shadow: 4px -1px 52px 16px #818a91;
+}
+.t2{
+    -webkit-box-shadow: 4px -1px 52px 16px #5bc0de;
+    -moz-box-shadow: 4px -1px 52px 16px #5bc0de;
+    box-shadow: 4px -1px 52px 16px #5bc0de;
+}
+.t3{
+    -webkit-box-shadow: 4px -1px 52px 16px #0275d8;
+    -moz-box-shadow: 4px -1px 52px 16px #0275d8;
+    box-shadow: 4px -1px 52px 16px #0275d8;
+}
+.t4{
+    -webkit-box-shadow: 4px -1px 52px 16px #5cb85c;
+    -moz-box-shadow: 4px -1px 52px 16px #5cb85c;
+    box-shadow: 4px -1px 52px 16px #5cb85c;
+}
+.t5{
+    -webkit-box-shadow: 4px -1px 52px 16px #f0ad4e;
+    -moz-box-shadow: 4px -1px 52px 16px #f0ad4e;
+    box-shadow: 4px -1px 52px 16px #f0ad4e;
+}
+
+.t6{
+    -webkit-box-shadow: 4px -1px 52px 16px #d9534f;
+    -moz-box-shadow: 4px -1px 52px 16px #d9534f;
+    box-shadow: 4px -1px 52px 16px #d9534f;
+}

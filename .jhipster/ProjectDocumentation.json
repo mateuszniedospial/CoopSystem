@@ -1,0 +1,63 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "lastAuthor",
+            "otherEntityName": "jUser",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "projectDocumentation"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "project",
+            "otherEntityName": "project",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "underCatalogue",
+            "otherEntityName": "documentationCatalogue",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "createdDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "modifyDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "version",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "content",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "lifeCycle",
+            "fieldType": "LifeCycle",
+            "fieldValues": "ACTIVE,INACTIVE,DEPRECATED,TERMINATED"
+        },
+        {
+            "fieldName": "label",
+            "fieldType": "String",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "data",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170311112049",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "project_documentation",
+    "pagination": "no"
+}

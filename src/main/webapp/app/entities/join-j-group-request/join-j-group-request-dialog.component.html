@@ -1,0 +1,26 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+        <h4 class="modal-title" id="myJoinJGroupRequestLabel">Send request to join the group</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_description">Explain why You wanna join the group</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="joinJGroupRequest.description"
+             />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Send</span>
+        </button>
+    </div>
+</form>

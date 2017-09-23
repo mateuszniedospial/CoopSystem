@@ -1,0 +1,19 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "task",
+            "otherEntityName": "task",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "fields": [],
+    "changelogDate": "20170311112049",
+    "entityTableName": "commit",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

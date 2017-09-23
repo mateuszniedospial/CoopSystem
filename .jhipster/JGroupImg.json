@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "jGroup",
+            "otherEntityName": "jGroup",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "jGroupImg"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "content",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170311112049",
+    "entityTableName": "j_group_img",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

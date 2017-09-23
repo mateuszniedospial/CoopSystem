@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity JUser.
+    -->
+    <changeSet id="20170311112049-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="sprintjuser_privilege_id"
+                                 baseTableName="j_user"
+                                 constraintName="fk_juser_sprintjuser_privilege_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sprint_j_user_privilege"/>
+
+        <addForeignKeyConstraint baseColumnNames="task_id"
+                                 baseTableName="j_user"
+                                 constraintName="fk_juser_task_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="task"/>
+
+    </changeSet>
+</databaseChangeLog>

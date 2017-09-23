@@ -1,0 +1,306 @@
+<div class="card" style="margin-top: -10px">
+    <!--Start of card header-->
+    <div class="card-header">
+        <h3><i class="fa fa-bar-chart" aria-hidden="true"></i> Project Report</h3>
+    </div>
+    <!--end of card header-->
+
+    <div class="card-block">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center;">
+                <button
+                    [routerLink]="['../']"
+                    type="button"
+                    class="btn btn-outline-danger">
+                    <span class="fa fa-undo"></span>
+                    <span class="hidden-md-down">Return to project</span>
+                </button>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center;">
+                <button
+                    [routerLink]="['../../../']"
+                    type="button"
+                    class="btn btn-outline-warning">
+                    <span class="fa fa-share"></span>
+                    <span class="hidden-md-down">Account main page</span>
+                </button>
+            </div>
+        </div>
+        <hr>
+        <div *ngIf="project">
+            <!--basic info section-->
+            <h5>Basic info:</h5>
+            <hr>
+            <div class="bs-callout bs-callout-default">
+                <br>
+                <div style="margin-top: -20px">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <b>Project name:</b>
+                        </div>
+                        <div class="col-md-2">
+                            <b>Lifecycle:</b>
+                        </div>
+                        <div class="col-md-2">
+                            <b>Number of all created tasks:</b>
+                        </div>
+                        <div class="col-md-2">
+                            <b>Number of all finished tasks:</b>
+                        </div>
+                        <div class="col-md-2">
+                            <b>&Sigma; Estimated:</b>
+                        </div>
+                        <div class="col-md-2">
+                            <b>&Sigma; Remaining:</b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <span>{{project.name}}</span>
+                        </div>
+                        <div class="col-md-2">
+                            <span><b>{{project.lifeCycle}}</b></span>
+                        </div>
+                        <ng-container *ngIf="tasksWithinProject">
+                            <div class="col-md-2">{{tasksWithinProject.length}}</div>
+                        </ng-container>
+                        <ng-container *ngIf="!tasksWithinProject">
+                            <div class="col-md-2">0</div>
+                        </ng-container>
+
+                        <div class="col-md-2">
+                           <span>{{finishedTasks}}</span>
+                        </div>
+                        <div class="col-md-2">{{sumOfEstimateTime}} MD</div>
+                        <div class="col-md-2">{{remainingTimeOfUndone}} MD</div>
+                    </div>
+                </div>
+            </div>
+            <!--end of basic info section-->
+            <br>
+
+            <div class="row">
+                <!--description section-->
+                <ng-container *ngIf="tasksToDo">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h5>To do:</h5>
+                        <hr>
+                        <div class="row bs-callout bs-callout-danger">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>Number of tasks:</b></span><br>
+                                    <span>{{tasksToDo.length}}</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Estimated:</b></span><br>
+                                    <span>{{sumToDoEstimated}} MD</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Remaining:</b></span><br>
+                                    <span>{{sumToDoRemaining}} MD</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Worklogs:</b></span><br>
+                                    <ng-container *ngIf="toDoWorkLogs">
+                                        <span>{{toDoWorkLogs.length}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="!toDoWorkLogs">
+                                        <span>0</span>
+                                    </ng-container>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Time spent:</b></span><br>
+                                    <span>{{sumToDoTimeSpent}} MD</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>Overall:</b></span><br>
+                                    {{toDoPercents}}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="tasksInProgress">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h5>In progress:</h5>
+                        <hr>
+                        <div class="row bs-callout bs-callout-warning">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>Number of tasks:</b></span><br>
+                                    <span>{{tasksInProgress.length}}</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Estimated:</b></span><br>
+                                    <span>{{sumInProgressEstimated}} MD</span>
+                                </div>
+
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Remaining:</b></span><br>
+                                    <span>{{sumInProgressRemaining}} MD</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Worklogs:</b></span><br>
+                                    <ng-container *ngIf="inProgressWorkLogs">
+                                        <span>{{inProgressWorkLogs.length}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="!inProgressWorkLogs">
+                                        <span>0</span>
+                                    </ng-container>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Time spent:</b></span><br>
+                                    <span>{{sumInProgressTimeSpent}} MD</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>Overall:</b></span><br>
+                                    {{inProgressPercents}}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="tasksInTest">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h5>In test:</h5>
+                        <hr>
+                        <div class="row bs-callout bs-callout-info">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>Number of tasks:</b></span><br>
+                                    <span>{{tasksInTest.length}}</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Estimated:</b></span><br>
+                                    <span>{{sumInTestEstimated}} MD</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Remaining:</b></span><br>
+                                    <span>{{sumInTestRemaining}} MD</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Worklogs:</b></span><br>
+                                    <ng-container *ngIf="inTestWorkLogs">
+                                        <span>{{inTestWorkLogs.length}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="!inTestWorkLogs">
+                                        <span>0</span>
+                                    </ng-container>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Time spent:</b></span><br>
+                                    <span>{{sumInTestTimeSpent}} MD</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>Overall:</b></span><br>
+                                    {{inTestPercents}}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="tasksDone">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h5>Done:</h5>
+                        <hr>
+                        <div class="row bs-callout bs-callout-success">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>Number of tasks:</b></span><br>
+                                    <span>{{tasksDone.length}}</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Estimated:</b></span><br>
+                                    <span>{{sumDoneEstimated}} MD</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Time spent:</b></span><br>
+                                    <span>{{sumDoneTimeSpent}} MD</span>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <span><b>&Sigma; Worklogs:</b></span><br>
+                                    <ng-container *ngIf="doneWorkLogs">
+                                        <span>{{doneWorkLogs.length}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="!doneWorkLogs">
+                                        <span>0</span>
+                                    </ng-container>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <span><b>Overall:</b></span><br>
+                                    {{donePercents}}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="tasksClosed">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h5>Closed:</h5>
+                    <hr>
+                    <div class="row bs-callout bs-callout-primary">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <span><b>Number of tasks:</b></span><br>
+                                <span>{{tasksClosed.length}}</span>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <span><b>&Sigma; Estimated:</b></span><br>
+                                <span>{{sumClosedEstimated}} MD</span>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <span><b>&Sigma; Time spent:</b></span><br>
+                                <span>{{sumClosedTimeSpent}} MD</span>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <span><b>&Sigma; Worklogs:</b></span><br>
+                                <ng-container *ngIf="closedWorkLogs">
+                                    <span>{{closedWorkLogs.length}}</span>
+                                </ng-container>
+                                <ng-container *ngIf="!closedWorkLogs">
+                                    <span>0</span>
+                                </ng-container>
+                            </div>
+
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <span><b>Overall:</b></span><br>
+                                {{closedPercents}}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </ng-container>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,507 @@
+<p-growl [value]="msgs" sticky="sticky"></p-growl>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <ng-container *ngIf="!project">
+        <h5>There is no project of ID: <b>{{projectID}}</b></h5>
+    </ng-container>
+    <ng-container *ngIf="project">
+        <h5>Documentation of project: <b>{{project.name}}</b></h5>
+    <hr>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align: center">
+                    <button
+                        [routerLink]="['/', { outlets: { popup: ['documentation-catalogue-new', {projectid:project?.id}] } }]"
+                        type="button"
+                        class="btn btn-outline-primary">
+                        <span class="fa fa-folder"></span>
+                        <span class="hidden-md-down">New Folder</span>
+                    </button>
+                </div>
+
+                <ng-container *ngIf="docsNCatalogues">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align: center">
+                        <button type="submit"
+                                [routerLink]="['/', {outlets: { popup: ['project-documentation-new', {projectid:project?.id, authorid: jUser?.id}] } }]"
+                                replaceUrl="true"
+                                class="btn btn-outline-primary">
+                            <span class="fa fa-file-text"></span>
+                            <span class="hidden-md-down">New Document</span>
+                        </button>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="selectedFolder && (selectedFolder.data!='ROOT')">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align: center">
+                        <button type="submit"
+                                [routerLink]="['/', {outlets: { popup: ['documentation-catalogue', selectedFolder?.id , 'edit']} }]"
+                                replaceUrl="true"
+                                class="btn btn-outline-warning">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down">Edit Folder</span>
+                        </button>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="selectedDoc">
+                    <ng-container *ngIf="editMode">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align: center">
+                        <button type="submit"
+                                [routerLink]="['/', {outlets: { popup: ['project-documentation', selectedDoc?.id , 'edit']} }]"
+                                replaceUrl="true"
+                                class="btn btn-outline-warning">
+                            <span class="fa fa-file-text"></span>
+                            <span class="hidden-md-down">Edit Document</span>
+                        </button>
+                    </div>
+                    </ng-container>
+                </ng-container>
+
+                <ng-container *ngIf="selectedFolder && (selectedFolder.data!='ROOT')">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align: center">
+                        <button type="submit"
+                                [routerLink]="['/', {outlets: { popup: ['documentation-catalogue', selectedFolder?.id , 'delete']} }]"
+                                replaceUrl="true"
+                                class="btn btn-outline-danger">
+                            <span class="fa fa-remove"></span>
+                            <span class="hidden-md-down">Delete Folder</span>
+                        </button>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="selectedDoc">
+                    <ng-container *ngIf="editMode">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align: center">
+                        <button type="submit"
+                                [routerLink]="['/', {outlets: { popup: ['project-documentation', selectedDoc?.id , 'delete']} }]"
+                                replaceUrl="true"
+                                class="btn btn-outline-danger">
+                            <span class="fa fa-file-text"></span>
+                            <span class="hidden-md-down">Delete Document</span>
+                        </button>
+                    </div>
+                    </ng-container>
+                </ng-container>
+
+            </div>
+
+            <ng-container *ngIf="selectedDoc">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                    </div>
+                    <ng-container *ngIf="!editMode">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">
+                            <button pButton type="button" class="ui-button-primary" icon="fa fa-pencil" (click)="goToEdit()" label="Edit mode"></button>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="editMode">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">
+                            <button pButton type="button" class="ui-button-primary" icon="fa fa-eye" (click)="goToRead()" label="Read mode"></button>
+                        </div>
+                    </ng-container>
+
+                </div>
+            </div>
+            </ng-container>
+
+        </div>
+    </div>
+
+    <ng-container *ngIf="(!docWasUpdatedInTheMeantime) && (!historyWasUpdatedInTheMeantime)">
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <hr>
+        <div class="row">
+
+            <!-- Folders -->
+            <ng-container *ngIf="!docsNCatalogues">
+                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                    <br>
+                    <h5>Directories</h5>
+                    <hr>
+                    <ng-container *ngIf="!docsNCatalogues">
+                        <h6 style="text-align: center">There are no created files yet.</h6>
+                        <h6 style="text-align: center">When first folder is created also the 'ROOT' documentation catalogue is made.</h6>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="docsNCatalogues?.length > 0">
+                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                    <br>
+                    <h5>Directories</h5>
+                    <hr>
+
+                    <p-tree class="lineFix" [value]="docsNCatalogues" selectionMode="single" [(selection)]="selectedFile" (onNodeSelect)="eventSelectedFile($event)" [style]="{'width':'100%'}" ></p-tree>
+                    <!--<div style="margin-top:8px">Selected: <b>{{selectedFile ? selectedFile.label : 'None'}}</b></div>-->
+
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="isInProgress && !selectedDoc && !selectedHistoryVersion">
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <br>
+                    <br>
+
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="signal"></div>
+                </div>
+            </ng-container>
+
+            <!-- Editor -->
+            <ng-container *ngIf="selectedDoc">
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <br>
+                    <h5>Content</h5>
+                    <hr>
+                    <ng-container *ngIf="editMode">
+                        <ng-container *ngIf="!selectedHistoryVersion">
+                            <p-editor [(ngModel)]="selectedDoc.content" [style]="{'height':'650px'}"><span [innerHTML]="selectedDoc.content"></span></p-editor>
+                        </ng-container>
+
+                        <ng-container *ngIf="selectedHistoryVersion">
+                            <p-editor [(ngModel)]="selectedHistoryVersion.content" [style]="{'height':'650px'}"></p-editor>
+                        </ng-container>
+                    </ng-container>
+
+                    <ng-container *ngIf="!editMode">
+                        <ng-container *ngIf="!selectedHistoryVersion">
+                        <p-editor [(ngModel)]="selectedDoc.content" [style]="{'height':'650px'}">
+                            <p-header>
+                                <span class="ql-formats" style="font-size: 95%;">[Read Mode] Document: {{selectedDoc.label}}</span>
+                            </p-header>
+                        </p-editor>
+                        </ng-container>
+                        <ng-container *ngIf="selectedHistoryVersion">
+                            <p-editor [(ngModel)]="selectedHistoryVersion.content" [style]="{'height':'650px'}">
+                                <p-header>
+                                    <span class="ql-formats" style="font-size: 95%;">[Read Mode] Document: {{selectedDoc.label}}</span>
+                                </p-header>
+                            </p-editor>
+                        </ng-container>
+
+                        <!--<ng-container *ngIf="!selectedHistoryVersion">-->
+                            <!--<div class="bs-callout bs-callout-default">-->
+                                <!--<h5>[Read Mode] Document: {{selectedDoc.label}}</h5>-->
+                                <!--<hr>-->
+                            <!--<span [innerHTML]="selectedDoc.content"></span>-->
+                            <!--</div>-->
+                        <!--</ng-container>-->
+                        <!--<ng-container *ngIf="selectedHistoryVersion">-->
+                            <!--<div class="bs-callout bs-callout-default">-->
+                                <!--<h5>[Read Mode] Document: {{selectedDoc.label}}</h5>-->
+                                <!--<hr>-->
+                                <!--<span [innerHTML]="selectedHistoryVersion.content"></span>-->
+                            <!--</div>-->
+                        <!--</ng-container>-->
+                    </ng-container>
+                    <!--<p>Value: {{selectedDoc.content||'empty'}}</p>-->
+
+                    <ng-container *ngIf = "!selectedHistoryVersion">
+                        <div class="bs-callout bs-callout-success">
+                            <ng-container *ngIf="isInProgress">
+                                <div class="signal"></div>
+                            </ng-container>
+                            <div class="row">
+                                <ng-container *ngIf="editMode">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">
+                                    <button pButton type="button" class="ui-button-success" icon="fa fa-floppy-o" (click)="saveDocument(copyDocSelectedAtStart, jUser)" label="Save"></button>
+                                </div>
+                                <!--<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">-->
+                                    <!--<button pButton type="button" class="ui-button-success" icon="fa fa-file-pdf-o" (click)="documentToPDF()" label="Document to PDF"></button>-->
+                                <!--</div>-->
+                                </ng-container>
+                                <!--<ng-container *ngIf="!editMode">-->
+                                    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center">-->
+                                        <!--<button pButton type="button" class="ui-button-success" icon="fa fa-file-pdf-o" (click)="documentToPDF()" label="Document to PDF"></button>-->
+                                    <!--</div>-->
+                                <!--</ng-container>-->
+
+                                <!--<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" style="text-align: center">-->
+                                <!--<button pButton type="button" class="ui-button-success" icon="fa fa-file-pdf-o" (click)="returnToDocument()" label="All documents to PDF"></button>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf = "selectedHistoryVersion">
+                        <div class="bs-callout bs-callout-success">
+                            <ng-container *ngIf="isInProgress">
+                                <div class="signal"></div>
+                            </ng-container>
+                            <div class="row">
+                                <ng-container *ngIf="editMode">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">
+                                    <button pButton type="button" class="ui-button-success" icon="fa fa-floppy-o" (click)="saveDocumentHistory(copyHistorySelectedAtStart, jUser)" label="Save (Selected Version)"></button>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">
+                                    <button pButton type="button" class="ui-button-success" icon="fa fa-file-pdf-o" (click)="historyToPDF()" label="Document to PDF"></button>
+                                </div>
+                                </ng-container>
+                                <ng-container *ngIf="!editMode">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align: center">
+                                        <button pButton type="button" class="ui-button-success" icon="fa fa-file-pdf-o" (click)="historyToPDF()" label="Document to PDF"></button>
+                                    </div>
+                                </ng-container>
+
+                                <!--<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" style="text-align: center">-->
+                                <!--<button pButton type="button" class="ui-button-success" icon="fa fa-file-pdf-o" (click)="returnToDocument()" label="All documents to PDF"></button>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+            <!--INFO -->
+
+            <ng-container *ngIf="selectedDoc">
+                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                    <br>
+                    <h5>Document</h5>
+                    <hr>
+
+                    <ng-container *ngIf="!selectedHistoryVersion">
+                        <div class="bs-callout bs-callout-primary">
+                            <h5>Basic information</h5>
+                            <span><b>Name:  </b>{{selectedDoc?.label}}</span>
+                            <br>
+                            <span><b>Description:  </b>{{selectedDoc?.data}}</span>
+                            <br>
+                            <span><b>Created:  </b>{{selectedDoc?.createdDate | date: 'medium'}}</span>
+                            <br>
+                            <span><b>Modified:  </b>{{selectedDoc?.modifyDate | date: 'medium'}}</span>
+                            <br>
+                            <span><b>Lifecycle:  </b>{{selectedDoc?.lifeCycle}}</span>
+                            <br>
+                            <span><b>Last modified by:  </b> <br> {{selectedDoc?.lastAuthor?.user?.firstName}} {{selectedDoc?.lastAuthor?.user?.lastName}}</span>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="selectedHistoryVersion">
+                        <div class="bs-callout bs-callout-primary">
+                            <h5>Basic information</h5>
+                            <span><b>Name:  </b>{{selectedDoc?.label}}</span>
+                            <br>
+                            <span><b>Description:  </b>{{selectedDoc?.data}}</span>
+                            <br>
+                            <span><b>Created:  </b>{{selectedHistoryVersion?.createdDate | date: 'medium'}}</span>
+                            <br>
+                            <span><b>Modified:  </b>{{selectedHistoryVersion?.modifyDate | date: 'medium'}}</span>
+                            <br>
+                            <span><b>Lifecycle:  </b>{{selectedHistoryVersion?.lifeCycle}}</span>
+                            <br>
+                            <span><b>Last modified by:  </b> <br> {{selectedHistoryVersion?.lastAuthor?.user?.firstName}} {{selectedHistoryVersion?.lastAuthor?.user?.lastName}}</span>
+                        </div>
+                    </ng-container>
+
+
+                    <div class="bs-callout bs-callout-warning">
+                        <ng-container *ngIf = "!selectedHistoryVersion">
+                            <h5>Versions</h5>
+                            <br>
+                            <span><b>Current version: {{selectedDoc?.version}}  </b>
+                        <ng-container *ngIf="editMode && hasPermissionToEdit">
+                            <hr>
+                            <button pButton type="button" class="ui-button-success" icon="fa fa-files-o" (click)="saveVersion(copyDocSelectedAtStart, jUser)" label="Save as new version"></button>
+                        </ng-container>
+                        <!--<ndv-edit-->
+                            <!--[title]="'documentVersion'"-->
+                            <!--[permission]="checkPermissions(perm)"-->
+                            <!--[placeholder]="selectedDoc?.version"-->
+                            <!--(onSave)="saveMethod($event, copyDocSelectedAtStart, jUser)">-->
+                        <!--</ndv-edit>-->
+                    </span>
+                            <br>
+                            <hr>
+                        </ng-container>
+                        <span><b>Previous:  </b>
+
+                        <ng-container *ngIf="docHistoryVersions?.length > 0">
+                              <br>
+                              <p-dropdown [options]="versions" [(ngModel)]="selectedVersion" placeholder="Select"
+                                          (onChange)="versionSelect($event)" [autoWidth]="true" [style]="{'width': '100%'}"></p-dropdown>
+                        </ng-container>
+
+                         <ng-container *ngIf="docHistoryVersions?.length == 0">
+                             there are no previous versions yet.
+                        </ng-container>
+
+                        <ng-container *ngIf="selectedHistoryVersion">
+                            <hr>
+                            <button pButton type="button" class="ui-button-warning" icon="fa fa-reply-all" (click)="returnToDocument()" label="Return to current version"></button>
+                        </ng-container>
+
+                    </span>
+                        <br>
+
+                    </div>
+
+                    <ng-container *ngIf="editMode">
+                    <ng-container *ngIf = "selectedHistoryVersion">
+                        <div class="bs-callout bs-callout-danger">
+                            <h5>Revert</h5>
+                            <br>
+                            <span><b>Do You want to revert document: <span style="color: #d9534f; font-weight: bold;">{{selectedDoc.label}}</span> to selected version? <span style="color: #d9534f; font-weight: bold;">({{selectedVersion}})</span></b></span>
+                            <br>
+                            <hr>
+                            <button type="submit"
+                                    [routerLink]="['/', {outlets: { popup: ['project', projectID ,'documentation', selectedDoc?.id, 'revert', {doc:selectedDoc?.id, revertTo: selectedHistoryVersion?.id}] } }]"
+                                    replaceUrl="true"
+                                    class="btn btn-outline-danger">
+                                <span class="fa fa-undo"></span>
+                                <span class="hidden-md-down">Revert</span>
+                            </button>
+
+                        </div>
+                    </ng-container>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+        </div>
+    </div>
+
+    </ng-container>
+
+
+    <!-- Simple merge kinda tool -->
+
+    <ng-container *ngIf="docWasUpdatedInTheMeantime">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <hr>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <br>
+                    <h5>Your version</h5>
+                    <hr>
+
+                    <!--Editor with changed version -->
+
+                    <p-editor [(ngModel)]="selectedDoc.content" [style]="{'height':'500px'}"></p-editor>
+
+                    <div class="bs-callout bs-callout-danger">
+                        <div class="row">
+                            <h5>Merge information</h5>
+                            <span style="word-wrap: break-word"> Just simply <span style="color: #d9534f;"><b>copy</b></span> any changes You want to merge and <span style="color: #d9534f;"><b>paste</b></span> them in the
+                                editor on the right. Click <span style="color: #d9534f;"><b>merge</b></span> when all your changes were adjusted.
+                            </span>
+
+                            <!--<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" style="text-align: center">-->
+                            <!--<button pButton type="button" class="ui-button-success" icon="fa fa-file-pdf-o" (click)="returnToDocument()" label="All documents to PDF"></button>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <br>
+                    <h5>Remote version</h5>
+                    <hr>
+
+                    <!--Editor with changed version -->
+                    <p-editor [(ngModel)]="docSelectedAtStart.content" [style]="{'height':'500px'}"></p-editor>
+
+                    <div class="bs-callout bs-callout-success">
+                        <div class="row">
+                            <ng-container *ngIf="editMode">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">
+                                    <button pButton type="button" class="ui-button-success" icon="fa fa-undo" (click)="returnFromMerge()" label="Return"></button>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">
+                                    <button pButton type="button" class="ui-button-success" icon="fa fa-exchange" (click)="saveDocument(copyDocSelectedAtStart, jUser)" label="Merge"></button>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="historyWasUpdatedInTheMeantime">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <hr>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <br>
+                    <h5>Your version</h5>
+                    <hr>
+
+                    <!--Editor with changed version -->
+
+                    <p-editor [(ngModel)]="selectedHistoryVersion.content" [style]="{'height':'500px'}"></p-editor>
+
+                    <div class="bs-callout bs-callout-danger">
+                        <div class="row">
+                            <h5>Merge information</h5>
+                            <span style="word-wrap: break-word"> Just simply <span style="color: #d9534f;"><b>copy</b></span> any changes You want to merge and <span style="color: #d9534f;"><b>paste</b></span> them in the
+                                editor on the right. Click <span style="color: #d9534f;"><b>merge</b></span> when all your changes were adjusted.
+                            </span>
+
+                            <!--<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" style="text-align: center">-->
+                            <!--<button pButton type="button" class="ui-button-success" icon="fa fa-file-pdf-o" (click)="returnToDocument()" label="All documents to PDF"></button>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <br>
+                    <h5>Remote version</h5>
+                    <hr>
+
+                    <!--Editor with changed version -->
+                    <p-editor [(ngModel)]="historySelectedAtStart.content" [style]="{'height':'500px'}"></p-editor>
+
+                    <div class="bs-callout bs-callout-success">
+                        <div class="row">
+                            <ng-container *ngIf="editMode">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">
+                                    <button pButton type="button" class="ui-button-success" icon="fa fa-undo" (click)="returnFromMerge()" label="Return"></button>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">
+                                    <button pButton type="button" class="ui-button-success" icon="fa fa-exchange" (click)="saveDocumentHistory(copyHistorySelectedAtStart, jUser)" label="Merge"></button>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </ng-container>
+
+
+    </ng-container>
+</div>
+
+
+    <!--<div class="row">-->
+        <!---->
+        <!---->
+    <!--</div>-->
+
+    <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+    <!--</div>-->
+<!--</ng-container>-->
+

@@ -1,0 +1,11 @@
+version: '2'
+services:
+    myjir-postgresql:
+        image: postgres:9.5.4
+        # volumes:
+        #     - ~/volumes/jhipster/myJiR/postgresql/:/var/lib/postgresql/
+        environment:
+            - POSTGRES_USER=myJiR
+            - POSTGRES_PASSWORD=
+        ports:
+            - 5432:5432

@@ -1,0 +1,204 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <!--alert section-->
+            <p-growl [value]="msgs" sticky="sticky"></p-growl>
+
+            <div class="card-header sprint-header">
+                <div class="row">
+                    <div class="col-md-3">
+                        <ng-container *ngIf="sprint">
+                            <span class="sprint-dates">Start date: </span>
+                            <span class="sprint-dates"[innerHTML]="formatDate(sprint.startTime)"></span>
+                            <br>
+                            <span class="sprint-dates">End date: </span>
+                            <span class="sprint-dates"[innerHTML]="formatDate(sprint.stopTime)"></span>
+                        </ng-container>
+                    </div>
+                    <div class="col-md-6">
+                        <h3><i class="fa fa-clock-o" aria-hidden="true"></i> Sprint table</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="card-block sprint-block">
+                <div class="row">
+
+                    <!--to do section-->
+                    <div class="col-md-2 modify-col">
+                        <div class="card-header to-do-header inner"><h5>To Do</h5></div>
+                        <div class="card-block to-do-block inner tasksWrapper">
+                            <div class='tasksWrapper'
+                                 [dragula]='"sixth-bag"'
+                                 id="TODO"
+                                 [dragulaModel]='taskToDo'>
+                                <div *ngFor="let task of taskToDo">
+                                    <div class="card to-do-task">
+                                        <div class="card-header to-do-task-header" style="height: 50px">
+                                            <span [innerHTML]="getTypeIcon(task?.type)"></span>
+                                            <a [routerLink]="['/task/view', task.id ]">{{task.id}}</a>
+                                            <span style="float: right"
+                                                  class="tag-pill tag-warning"
+                                                  [innerHTML]="extractNumberFromEstimate(task?.estimateTime)"></span>
+                                            <img *ngIf="getAvatarById(task?.assignee?.id)"
+                                                 class="avatar"
+                                                 [src]="'data:' + getAvatarById(task?.assignee?.id)?.contentContentType + ';base64,' + getAvatarById(task?.assignee?.id)?.content"/>
+
+                                            <img *ngIf="getAvatarById(task?.assignee?.id) == null"
+                                                 class="avatar"
+                                                 src="unknownUser.jpg" alt="jUser Img" />
+                                        </div>
+                                        <div class="card-block to-do-task-block">
+                                            <b> Title: </b>
+                                            <span [innerHTML]="getSign(40,task.title)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end of to do section-->
+
+                    <!--in progress section-->
+                    <div class="col-md-2 modify-col">
+                        <div class="card-header in-progress-header inner"><h5>In Progress</h5></div>
+                        <div class="card-block in-progress-block inner tasksWrapper">
+                            <div class='tasksWrapper'
+                                 [dragula]='"sixth-bag"'
+                                 id="INPROGRESS"
+                                 [dragulaModel]='taskInProg'>
+                                <div *ngFor="let task of taskInProg">
+                                    <div class="card in-progress-task">
+                                        <div class="card-header in-progress-task-header" style="height: 50px">
+                                            <span [innerHTML]="getTypeIcon(task?.type)"></span>
+                                            <a [routerLink]="['/task/view', task.id ]">{{task.id}}</a>
+                                            <span style="float: right" class="tag-pill tag-warning"
+                                                  [innerHTML]="extractNumberFromEstimate(task?.estimateTime)"></span>
+                                            <img *ngIf="getAvatarById(task?.assignee?.id)"
+                                                 class="avatar"
+                                                 [src]="'data:' + getAvatarById(task?.assignee?.id)?.contentContentType + ';base64,' + getAvatarById(task?.assignee?.id)?.content"/>
+
+                                            <img *ngIf="getAvatarById(task?.assignee?.id) == null"
+                                                 class="avatar"
+                                                 src="unknownUser.jpg" alt="jUser Img" />
+                                        </div>
+                                        <div class="card-block in-progress-task-block">
+                                            <b> Title: </b>
+                                            <span [innerHTML]="getSign(40,task.title)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end of in progress section-->
+
+                    <!--dev done section-->
+                    <div class="col-md-2 modify-col">
+                        <div class="card-header dev-done-header inner"><h5>Dev done</h5></div>
+                        <div class="card-block dev-done-block inner tasksWrapper">
+                            <div class='tasksWrapper'
+                                 [dragula]='"sixth-bag"'
+                                 id="DEVDONE"
+                                 [dragulaModel]='taskDevDone'>
+                                <div *ngFor="let task of taskDevDone">
+                                    <div class="card dev-done-task">
+                                        <div class="card-header dev-done-task-header" style="height: 50px">
+                                            <span [innerHTML]="getTypeIcon(task?.type)"></span>
+                                            <a [routerLink]="['/task/view', task.id ]">{{task.id}}</a>
+                                            <span style="float: right" class="tag-pill tag-warning"
+                                                  [innerHTML]="extractNumberFromEstimate(task?.estimateTime)"></span>
+                                            <img *ngIf="getAvatarById(task?.assignee?.id)"
+                                                 class="avatar"
+                                                 [src]="'data:' + getAvatarById(task?.assignee?.id)?.contentContentType + ';base64,' + getAvatarById(task?.assignee?.id)?.content"/>
+
+                                            <img *ngIf="getAvatarById(task?.assignee?.id) == null"
+                                                 class="avatar"
+                                                 src="unknownUser.jpg" alt="jUser Img" />
+
+                                        </div>
+                                        <div class="card-block dev-done-task-block">
+                                            <b> Title: </b>
+                                            <span [innerHTML]="getSign(40,task.title)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end of dev done section-->
+
+                    <!--in test section-->
+                    <div class="col-md-2 modify-col">
+                        <div class="card-header testing-header inner"><h5>Testing</h5></div>
+                        <div class="card-block testing-block inner tasksWrapper">
+                            <div class='tasksWrapper'
+                                 [dragula]='"sixth-bag"'
+                                 id="TEST"
+                                 [dragulaModel]='taskInTest'>
+                                <div *ngFor="let task of taskInTest">
+                                    <div class="card testing-task">
+                                        <div class="card-header testing-task-header" style="height: 50px">
+                                            <span [innerHTML]="getTypeIcon(task?.type)"></span>
+                                            <a [routerLink]="['/task/view', task.id ]">{{task.id}}</a>
+                                            <span style="float: right" class="tag-pill tag-warning"
+                                                  [innerHTML]="extractNumberFromEstimate(task?.estimateTime)"></span>
+                                            <img *ngIf="getAvatarById(task?.assignee?.id)"
+                                                 class="avatar"
+                                                 [src]="'data:' + getAvatarById(task?.assignee?.id)?.contentContentType + ';base64,' + getAvatarById(task?.assignee?.id)?.content"/>
+
+                                            <img *ngIf="getAvatarById(task?.assignee?.id) == null"
+                                                 class="avatar"
+                                                 src="unknownUser.jpg" alt="jUser Img" />
+
+                                        </div>
+                                        <div class="card-block testing-task-block">
+                                            <b> Title: </b>
+                                            <span [innerHTML]="getSign(40,task.title)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end of in test section-->
+
+                    <!--done section-->
+                    <div class="col-md-2  modify-col">
+                        <div class="card-header done-header inner"><h5>Done</h5></div>
+                        <div class="card-block done-block inner tasksWrapper">
+                            <div class='tasksWrapper'
+                                 [dragula]='"sixth-bag"'
+                                 id="DONE"
+                                 [dragulaModel]='taskDone'>
+                                <div *ngFor="let task of taskDone">
+                                    <div class="card done-task">
+                                        <div class="card-header done-task-header" style="height: 50px">
+                                            <span [innerHTML]="getTypeIcon(task?.type)"></span>
+                                            <a [routerLink]="['/task/view', task.id ]">{{task.id}}</a>
+                                            <span style="float: right" class="tag-pill tag-warning"
+                                                  [innerHTML]="extractNumberFromEstimate(task?.estimateTime)"></span>
+                                            <img *ngIf="getAvatarById(task?.assignee?.id)"
+                                                 class="avatar"
+                                                 [src]="'data:' + getAvatarById(task?.assignee?.id)?.contentContentType + ';base64,' + getAvatarById(task?.assignee?.id)?.content"/>
+
+                                            <img *ngIf="getAvatarById(task?.assignee?.id) == null"
+                                                 class="avatar"
+                                                 src="unknownUser.jpg" alt="jUser Img" />
+                                        </div>
+                                        <div class="card-block done-task-block">
+                                            <b> Title: </b>
+                                            <span [innerHTML]="getSign(40,task.title)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end of done section-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

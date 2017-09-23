@@ -1,0 +1,210 @@
+enum LifeCycle {
+	ACTIVE,
+	INACTIVE,
+    DEPRECATED,
+    TERMINATED
+}
+
+enum TaskLifeCycle {
+	TODO,
+    INPROGRESS,
+    TEST,
+    REVIEWED,
+    DONE
+}
+
+enum TaskType {
+	TTASK,
+    BUG,
+    NABUG,
+    STORY,
+    EPIC,
+    DOCUTASK,
+    ADMINTASK,
+    ADHOC
+}
+
+enum TaskPriority {
+	MAJOR,
+    MINOR,
+    BLOCKER,
+    TRIVIAL
+}
+
+enum SprintPrivilegeType {
+	SCRUM_MASTER,
+    PRODUCT_OWNER,
+    DEVELOPER
+}
+
+entity JUser {
+	id Long,
+    user Long required
+}
+
+entity JUserImg {
+	id Long ,
+    content ImageBlob
+}
+entity JGroup {
+	id Long,
+	name String required,
+	description Blob,
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime,
+    lifeCycle LifeCycle required
+}
+
+entity JGroupImg {
+	id Long,
+	content ImageBlob required
+}
+
+entity Project {
+	id Long,
+	name String required,
+	description TextBlob,
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime,
+    lifeCycle LifeCycle
+}
+
+entity ProjectImg {
+	id Long,
+	content ImageBlob required
+}
+
+entity ProjectDocumentation {
+	id Long,
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime,
+    version Integer,
+    content TextBlob,
+    lifeCycle LifeCycle
+}
+entity DocumentationHistory {
+	id Long,
+    createdDate ZonedDateTime,
+    content TextBlob,
+    version Integer,
+    modifyDate ZonedDateTime,
+    lifeCycle LifeCycle
+}
+entity WorkLog {
+	id Long,
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime,
+	startWork ZonedDateTime,
+    stopWork ZonedDateTime,
+    description String,
+    timeInHour Integer required
+}
+
+entity Task {
+	id Long
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime,
+    lifeCycle TaskLifeCycle,
+    enviroment String,
+    title String required,
+    type TaskType required,
+	priority TaskPriority required,
+    version String
+	remainingTime String ,
+	estimateTime String required
+
+}
+entity TaskDescription {
+	id Long,
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime,
+    content TextBlob
+}
+entity Comment {
+	id Long,
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime,
+    content TextBlob
+}
+
+entity Attachment {
+	id Long,
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime,
+    lifeCycle LifeCycle,
+    content Blob required
+}
+
+entity Commit {
+	id Long
+}
+
+entity Sprint {
+	id Long,
+    title String required,
+	description Blob,
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime
+}
+
+entity SprintJUserPrivilege{
+	id Long,
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime,
+	type SprintPrivilegeType required
+}
+
+entity SprintDocument{
+	id Long,
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime,
+    content TextBlob required
+}
+
+entity Report {
+	id Long,
+    createdDate ZonedDateTime,
+    modifyDate ZonedDateTime,
+    data Blob
+}
+
+relationship OneToOne {
+	JUserImg{juser} to JUser,
+	JGroupImg{jGroup} to JGroup,
+	ProjectImg{project} to Project,
+	TaskDescription{task} to Task,
+    Task{sprint} to Sprint,
+    SprintJUserPrivilege{sprint} to Sprint,
+    JUser{sprintJUserPrivilege} to SprintJUserPrivilege,
+    Sprint{jGroup} to JGroup,
+    Task{parent} to Task,
+    Task{jGroup} to JGroup,
+    WorkLog {juser} to JUser,
+    Task {assignee} to JUser,
+    Task{reporter} to JUser,
+    ProjectDocumentation{lastAuthor} to JUser
+}
+relationship OneToMany {
+    Task{watchers(id)} to JUser,
+	Task{child(id)} to Task
+}
+//relacja ta oznacza ze wiele dokumentow ma relacje do jednego parenta
+relationship ManyToOne{
+ 	SprintDocument{sprint} to Sprint,
+    ProjectDocumentation{project} to Project,
+ 	Report{sprint} to Sprint,
+	Attachment{task} to Task,
+ 	WorkLog {task} to Task,
+	DocumentationHistory {projectDocumentation} to ProjectDocumentation,
+	Comment {task} to Task,
+    Task{juser} to JUser
+}
+
+relationship ManyToMany {
+	Commit{task} to Task,
+    Project{jGroup} to JGroup,
+	JGroup{juser} to JUser
+}
+
+
+

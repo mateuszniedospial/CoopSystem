@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity Jcommit.
+    -->
+    <changeSet id="20170604032700-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="j_user_id"
+                                 baseTableName="jcommit"
+                                 constraintName="fk_jcommit_j_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="jcommits_id"
+                                 baseTableName="jcommit_tasks"
+                                 constraintName="fk_jcommit_tasks_jcommits_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jcommit"/>
+        <addForeignKeyConstraint baseColumnNames="tasks_id"
+                                 baseTableName="jcommit_tasks"
+                                 constraintName="fk_jcommit_tasks_tasks_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="task"/>
+        
+    </changeSet>
+</databaseChangeLog>

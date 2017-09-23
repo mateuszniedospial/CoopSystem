@@ -1,0 +1,76 @@
+/* ==========================================================================
+Main page styles
+========================================================================== */
+
+.hipster {
+    display: inline-block;
+    width: 347px;
+    height: 497px;
+    background: url("../../content/images/hipster.png") no-repeat center top;
+    background-size: contain;
+}
+
+/* wait autoprefixer update to allow simple generation of high pixel density media query */
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2),
+only screen and (   min--moz-device-pixel-ratio: 2),
+only screen and (     -o-min-device-pixel-ratio: 2/1),
+only screen and (        min-device-pixel-ratio: 2),
+only screen and (                min-resolution: 192dpi),
+only screen and (                min-resolution: 2dppx) {
+    .hipster {
+        background: url("../../content/images/hipster2x.png") no-repeat center top;
+        background-size: contain;
+    }
+}
+
+h1 {
+    text-align: center;
+    padding: 10px 10px 10px 10px;
+}
+
+h2 {
+    text-align: center;
+}
+
+p {
+    text-align: center;
+}
+
+a{
+    text-align: center;
+}
+
+.tools {
+    display: block;
+    margin: 0 auto;
+    width: 127px;
+    height: 167px;
+    background: url("../../content/images/tools.png") no-repeat center;
+    background-size: contain;
+}
+
+.links {
+    display: block;
+    margin: 0 auto;
+    width: 127px;
+    height: 167px;
+    background: url("../../content/images/links.png") no-repeat center;
+    background-size: contain;
+}
+
+.users {
+    display: block;
+    margin: 0 auto;
+    width: 127px;
+    height: 167px;
+    background: url("../../content/images/users.png") no-repeat center;
+    background-size: contain;
+}
+
+.sign-up{
+    width: 125px ;
+    padding: 15px 15px 15px 15px;
+    margin-left: auto;
+    margin-right: auto ;
+}

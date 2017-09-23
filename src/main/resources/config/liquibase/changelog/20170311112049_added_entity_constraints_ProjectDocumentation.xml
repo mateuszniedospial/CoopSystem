@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity ProjectDocumentation.
+    -->
+    <changeSet id="20170311112049-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="last_author_id"
+                                 baseTableName="project_documentation"
+                                 constraintName="fk_project_documentation_last_author_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="project_id"
+                                 baseTableName="project_documentation"
+                                 constraintName="fk_project_documentation_project_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="project"/>
+
+        <addForeignKeyConstraint baseColumnNames="under_catalogue_id"
+                                 baseTableName="project_documentation"
+                                 constraintName="fk_project_documentation_under_catalogue_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="documentation_catalogue"/>
+
+    </changeSet>
+</databaseChangeLog>

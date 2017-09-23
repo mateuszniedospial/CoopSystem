@@ -1,0 +1,277 @@
+<div class="card">
+    <!--Header of sub page -->
+    <div class="card-header">
+        <h3><i class="fa fa-search" aria-hidden="true"></i>
+            Search tool
+        </h3>
+    </div>
+    <!--End of header-->
+
+    <!--Main body-->
+    <div class="card-block">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col">
+                    <h4>Choose parameters</h4>
+                </div>
+
+            </div>
+            <div class="bs-callout search-box">
+                <!--First row of input fields-->
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="title"><b>Title</b></label>
+                        <div class="input-group">
+                        <span class="input-group-addon">
+                            <input type="checkbox" [(ngModel)]="customCheckBox.isTitle">
+                         </span>
+                            <input id="title"
+                                   type="text"
+                                   class="form-control"
+                                   [(ngModel)]="queryParameter.title">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="ID"><b>Id</b></label>
+                        <div class="input-group">
+                        <span class="input-group-addon">
+                            <input type="checkbox" [(ngModel)]="customCheckBox.isId">
+                        </span>
+                            <input id="ID"
+                                   type="text"
+                                   class="form-control"
+                                   [(ngModel)]="queryParameter.id">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="version"><b>Version</b></label>
+                        <div class="input-group">
+                        <span class="input-group-addon">
+                            <input type="checkbox" [(ngModel)]="customCheckBox.isVersion">
+                        </span>
+                            <input id="version"
+                                   type="text"
+                                   class="form-control"
+                                   [(ngModel)]="queryParameter.version">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="env"><b>Environment</b></label>
+                        <div class="input-group">
+                        <span class="input-group-addon">
+                            <input type="checkbox" [(ngModel)]="customCheckBox.isEnviroment">
+                        </span>
+                            <input id="env"
+                                   type="text"
+                                   class="form-control"
+                                   [(ngModel)]="queryParameter.enviroment">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="status"><b>Status</b></label>
+                        <div class="input-group">
+                        <span class="input-group-addon">
+                            <input id="status" type="checkbox" [(ngModel)]="customCheckBox.isStatus">
+                        </span>
+                            <select class="form-control " [(ngModel)]="queryParameter.status">
+                                <option *ngFor='let option of taskStatusItem' value='{{option}}'><span>{{option}}</span>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="prjct"><b>Project</b></label>
+                        <div class="input-group">
+                        <span class="input-group-addon">
+                            <input id="prjct" type="checkbox" [(ngModel)]="customCheckBox.isProject">
+                        </span>
+                            <select class="form-control " [(ngModel)]="queryParameter.project">
+                                <option *ngFor='let project of projects' value='{{project.id}}'>
+                                    <span>{{project.name}}</span></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--End of first row of input fields-->
+
+                <!--Twice field of input fields-->
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="comment"><b>Comment</b></label>
+                        <div class="input-group">
+                        <span class="input-group-addon">
+                            <input type="checkbox" [(ngModel)]="customCheckBox.isComment">
+                        </span>
+                            <input id="comment"
+                                   type="text"
+                                   class="form-control"
+                                   [(ngModel)]="queryParameter.comment">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="descr"><b>Description</b></label>
+                        <div class="input-group">
+                        <span class="input-group-addon">
+                            <input type="checkbox" [(ngModel)]="customCheckBox.isDescription">
+                         </span>
+                            <input id="descr"
+                                   type="text"
+                                   class="form-control"
+                                   [(ngModel)]="queryParameter.description">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="assignee"><b>Assignee</b></label>
+                        <div class="input-group">
+                        <span class="input-group-addon">
+                            <input id="assignee" type="checkbox" [(ngModel)]="customCheckBox.isAssigne">
+                        </span>
+                            <select class="form-control " [(ngModel)]="queryParameter.assignee">
+                                <option *ngFor='let juser of jGroupWithUsers?.jusers' value='{{juser?.id}}'><span>{{juser?.user.login}}</span>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="field_createdDate"><b> Creat. after
+                            <input type="checkbox" [(ngModel)]="customCheckBox.isAfterCreated">
+                            /before
+                            <input type="checkbox" [(ngModel)]="customCheckBox.isBeforeCreated"></b>
+                        </label>
+
+                        <input id="field_createdDate"
+                               type="datetime-local"
+                               class="form-control"
+                               name="createdDate"
+                               [(ngModel)]="queryParameter.createDate"/>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="field_modifiedDate"><b>Mod. after
+                            <input type="checkbox" [(ngModel)]="customCheckBox.isAfterModfied">
+                            /before
+                            <input type="checkbox" [(ngModel)]="customCheckBox.isBeforeModified"></b>
+                        </label>
+
+                        <input id="field_modifiedDate"
+                               type="datetime-local"
+                               class="form-control"
+                               name="modifiedDate"
+                               [(ngModel)]="queryParameter.modifiedDate"/>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-control-label" for="prio"><b>Priority</b></label>
+                        <div class="input-group">
+                        <span class="input-group-addon">
+                            <input id="prio" type="checkbox" [(ngModel)]="customCheckBox.isPrioritu">
+                        </span>
+                            <select class="form-control " [(ngModel)]="queryParameter.priority">
+                                <option *ngFor='let option of taskPriorityItem' value='{{option}}'>
+                                    <span>{{option}}</span>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <!--End of twice field of input fields -->
+            </div>
+            <hr>
+
+            <!--search button-->
+            <div class="row">
+                <div class="col-md-2">
+                    <button class="btn btn-primary"
+                            (click)="searchClick()">
+                        <i class="fa fa-search" aria-hidden="true">Search</i>
+                    </button>
+                </div>
+            </div>
+            <!--End of search button-->
+            <br>
+
+            <!--Progressbar section-->
+            <div *ngIf="progress>0 && progress !=100" class="row">
+                <div class="signal"></div>
+            </div>
+            <!--End of progressbar section-->
+
+
+            <div *ngIf="progress==0 || progress ==100" class="row"></div>
+
+            <!--Result section-->
+            <div *ngIf="result?.length>0" class="row">
+                <div class="col-md-12">
+                    <h4>Results:</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th><b>Title</b></th>
+                                    <th>Type</th>
+                                    <th>Priority</th>
+                                    <th>Estimate</th>
+                                    <th>Remaining</th>
+                                    <th>Status</th>
+                                    <th>Environment</th>
+                                    <th>Project</th>
+                                    <th>Version</th>
+                                    <th>Created</th>
+                                    <th>Modify</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let task of result">
+                                    <td><a [routerLink]="['../task/view', task.id ]">{{task.id}}</a></td>
+                                    <td>{{task.title}}</td>
+                                    <td><span [innerHTML]="taskIconStaticRef.getTypeIcon(task?.type)"></span></td>
+                                    <td><span
+                                        [innerHTML]="taskStaticRef.translateTaskPriorityToString(task.priority)"></span>
+                                    </td>
+                                    <td>{{task.estimateTime}}</td>
+                                    <td>{{task.remainingTime}}</td>
+                                    <td><span
+                                        [innerHTML]="taskStaticRef.translateTaskLifeCycleToString(task.lifeCycle)"></span>
+                                    </td>
+                                    <td>{{task.enviroment}}</td>
+                                    <td><a [routerLink]="['/project', task.project?.id]">{{task.project?.name}}</a></td>
+                                    <td>{{task.version}}</td>
+                                    <td><span [innerHTML]=dateUtilStaticRef.formatDate(task.createdDate)></span></td>
+                                    <td><span [innerHTML]=dateUtilStaticRef.formatDate(task.modifyDate)></span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <!--End of result section-->
+
+            <!--Not found section-->
+            <div *ngIf="progress==100 && result?.length==0" class="row">
+                <div class="col-md-12">
+                    <h3>Unfortunately result not found! :(</h3>
+                </div>
+            </div>
+            <!--end of not found section-->
+        </div>
+
+    </div>
+    <!--end of main body-->
+</div>

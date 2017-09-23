@@ -1,0 +1,299 @@
+<p-growl [value]="msgs" sticky="sticky"></p-growl>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <br>
+    <div class="row">
+        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+            <ng-container *ngIf="project">
+                <h3>
+
+                <ng-container *ngIf="!projectImg">
+                    <img src="users.png" alt="Project Img" class="img-thumbnail img-size-max"/>
+                </ng-container>
+
+                <ng-container *ngIf="projectImg">
+                    <img [src]="'data:' + projectImg?.contentContentType + ';base64,' + projectImg?.content" alt="Project image" class="img-thumbnail img-size-max"/>
+                </ng-container>
+
+                    Project: <b>{{project?.name}}</b>
+                </h3>
+            </ng-container>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align: center">
+            <ng-container *ngIf="hasPermissions">
+                <br>
+                <br>
+                <br>
+                <!--<div class="col-lg-12 col-md-3 col-sm-12 col-xs-12" style="text-align: center;">-->
+                    <button class="btn btn-primary create-project" [routerLink]="['/', { outlets: { popup: ['project', project.id, 'edit'] } }]">
+                        <span class="fa fa-pencil"></span>
+                        <span>
+                            Edit project
+                        </span>
+                    </button>
+                <!--</div>-->
+            </ng-container>
+        </div>
+    </div>
+    <hr>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+            <ng-container *ngIf="hasPermissions">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align: center;">
+                    <ng-container *ngIf="!projectImg">
+                        <button class="btn btn-outline-primary create-project-img" [routerLink]="['/', { outlets: { popup: ['project-img-new', {projectid:project?.id}] } }]">
+                            <span class="fa fa-image"></span>
+                            <span>Add project image</span>
+                        </button>
+                    </ng-container>
+
+                    <ng-container *ngIf="projectImg">
+                        <button type="submit"
+                                [routerLink]="['/', {outlets: { popup: ['project-img-new',{projectid:project?.id, imgid:projectImg?.id}]}}]"
+                                replaceUrl="true"
+                                class="btn btn-outline-primary create-project-img">
+                            <span class="fa fa-image"></span>
+                            <span class="hidden-md-down">Change project image</span>
+                        </button>
+                    </ng-container>
+                </div>
+            </ng-container>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align: center;">
+                <button
+                    [routerLink]="['../']"
+                    type="button"
+                    class="btn btn-outline-danger">
+                    <span class="fa fa-undo"></span>
+                    <span class="hidden-md-down">Return to projects</span>
+                </button>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align: center;">
+                <button
+                    [routerLink]="['../../']"
+                    type="button"
+                    class="btn btn-outline-warning">
+                    <span class="fa fa-share"></span>
+                    <span class="hidden-md-down">Account main page</span>
+                </button>
+            </div>
+            <!--<ng-container *ngIf="!hasPermissions">-->
+                <!--<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center;">-->
+                    <!--<button-->
+                        <!--[routerLink]="['']"-->
+                        <!--type="button"-->
+                        <!--class="btn btn-outline-success">-->
+                        <!--<span class="fa fa-share"></span>-->
+                        <!--<span class="hidden-md-down">Send request to join the project</span>-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</ng-container>-->
+            <ng-container *ngIf="hasPermissions">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="text-align: center;">
+                    <button
+                        [routerLink]="['/', { outlets: { popup: ['j-group-new', {userid:jUser?.id, projectid:project?.id}] } }]"
+                        type="button"
+                        class="btn btn-outline-success">
+                        <span class="fa fa-users"></span>
+                        <span class="hidden-md-down">Create new group</span>
+                    </button>
+                </div>
+            </ng-container>
+        </div>
+    <hr>
+    </div>
+    <hr>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!--Project description-->
+                    <div class="bs-callout bs-callout-default">
+                        <h5>Description</h5>
+                        <br>
+                        <ng-container *ngIf="project">
+                            <ndv-area [title]="'description'"
+                                      [permission]="checkPermissions()"
+                                      [placeholder]="project.description"
+                                      (onSave)="saveMethod($event)">
+                            </ndv-area>
+                        </ng-container>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!--Basic information -->
+                    <div class="bs-callout bs-callout-default">
+                        <ng-container *ngIf="project">
+                        <h5>Information</h5>
+                        <br>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <span><b>Name:  </b></span>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-12">
+                                    <ndv-edit [title]="'name'"
+                                              [permission]="checkPermissions()"
+                                              [placeholder]="project.name"
+                                              (onSave)="saveMethod($event)">
+                                    </ndv-edit>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <span><b>Created:  </b></span>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-12">
+                                    <span>{{project?.createdDate | date: 'medium'}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <span><b>Modified:  </b></span>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-12">
+                                    <span>{{project?.modifyDate | date: 'medium'}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                                    <span><b>Lifecycle:  </b></span>
+                                </div>
+                                <div class="col-lg-9 col-md-9 col-sm-6 col-xs-12">
+                                    <ng-container *ngIf="project?.lifeCycle == 'ACTIVE'">
+                                        <p class="alert alert-success" role="alert"><b>{{project?.lifeCycle}}</b></p>
+                                    </ng-container>
+                                    <ng-container *ngIf="project?.lifeCycle == 'INACTIVE'">
+                                        <p class="alert alert-warning" role="alert"><b>{{project?.lifeCycle}}</b></p>
+                                    </ng-container>
+                                    <ng-container *ngIf="project?.lifeCycle == 'DEPRECATED'">
+                                        <p class="alert alert-info" role="alert"><b>{{project?.lifeCycle}}</b></p>
+                                    </ng-container>
+                                    <ng-container *ngIf="project?.lifeCycle == 'TERMINATED'">
+                                        <p class="alert alert-danger" role="alert"><b>{{project?.lifeCycle}}</b></p>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <!--Documentation button-->
+                    <ng-container *ngIf="hasPermissions">
+                        <div class="bs-callout bs-callout-primary">
+                            <h5>Documentation</h5>
+                            <br>
+                            <button type="submit"
+                                    [routerLink]="['/project', project?.id, 'documentation']"
+                                    replaceUrl="true"
+                                    class="btn btn-outline-primary">
+                                <span class="fa fa-file-text"></span>
+                                <span class="hidden-md-down">Project documentation</span>
+                            </button>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="hasPermissions">
+                        <div class="bs-callout bs-callout-info">
+                            <h5>Report</h5>
+                            <br>
+                            <button type="submit"
+                                    [routerLink]="['/project', project?.id, 'report']"
+                                    replaceUrl="true"
+                                    class="btn btn-outline-info">
+                                <span class="fa fa-bar-chart"></span>
+                                <span class="hidden-md-down">Project report</span>
+                            </button>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ng-container *ngIf="projectJGroups?.length == 0">
+                <div class="bs-callout bs-callout-default">
+                    <h5>Project's groups</h5>
+                    <span>
+                        There are no project groups yet.<br>
+                        Be the first to create one!
+                        <br>
+                    </span>
+                    <br>
+                    <button
+                        [routerLink]="['/', { outlets: { popup: ['j-group-new', {userid:jUser?.id, projectid:project?.id}] } }]"
+                        type="button"
+                        class="btn btn-outline-success">
+                        <span class="fa fa-users"></span>
+                        <span class="hidden-md-down">Create new group</span>
+                    </button>
+                </div>
+            </ng-container>
+
+            <!--Groups-->
+            <ng-container *ngIf="projectJGroups?.length > 0">
+                <div class="bs-callout bs-callout-default">
+                    <h5>Groups that are currently working on the project</h5>
+                    <br>
+                        <table class="table table-hover table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Img</th>
+                                <th>Name</th>
+                                <th>Created date</th>
+                                <th>Modified date</th>
+                                <th>Lifecycle</th>
+                                <!--<th>Description</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ng-container *ngFor="let jGroup of projectJGroups; trackBy: trackId">
+                                <tr [routerLink]="['../../j-group', jGroup?.id ]" style="cursor: pointer">
+
+                                    <th scope="row">{{jGroup?.id}}</th>
+
+                                    <ng-container *ngIf="jGroupsImgMap">
+
+                                        <td>
+                                            <ng-container *ngIf="jGroupsImgMap[jGroup?.id]?.content.length == 0">
+                                                <img src="../../content/images/users.png" alt="jGroup Img" class="img-thumbnail img-size-max-group"/>
+                                            </ng-container>
+
+                                            <ng-container *ngIf="jGroupsImgMap[jGroup?.id]?.content.length > 0">
+                                                <img class="img-thumbnail img-size-max-group" [src]="'data:' + jGroupsImgMap[jGroup?.id]?.contentContentType + ';base64,' + jGroupsImgMap[jGroup?.id]?.content" alt="jGroup Img"/>
+                                            </ng-container>
+
+                                        </td>
+
+                                    </ng-container>
+
+                                    <td><b>{{jGroup?.name}}</b></td>
+                                    <td><span style="font-size: 13px;" [innerHTML]="dateUtilStaticRef.formatDate(jGroup?.createdDate)"></span></td>
+                                    <td><span style="font-size: 13px;" [innerHTML]="dateUtilStaticRef.formatDate(jGroup?.modifyDate)"></span></td>
+
+                                    <ng-container *ngIf="jGroup?.lifeCycle == 'ACTIVE'">
+                                        <td class="alert alert-success">{{jGroup?.lifeCycle}}</td>
+                                    </ng-container>
+                                    <ng-container *ngIf="jGroup?.lifeCycle == 'INACTIVE'">
+                                        <td class="alert alert-warning">{{jGroup?.lifeCycle}}</td>
+                                    </ng-container>
+                                    <ng-container *ngIf="jGroup?.lifeCycle == 'DEPRECATED'">
+                                        <td class="alert alert-info">{{jGroup?.lifeCycle}}</td>
+                                    </ng-container>
+                                    <ng-container *ngIf="jGroup?.lifeCycle == 'TERMINATED'">
+                                        <td class="alert alert-danger">{{jGroup?.lifeCycle}}</td>
+                                    </ng-container>
+
+                                    <!--<ng-container *ngIf="jGroup?.description">-->
+                                        <!--<td>{{jGroup?.description}}</td>-->
+                                    <!--</ng-container>-->
+
+                                </tr>
+
+                            </ng-container>
+                            </tbody>
+                        </table>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,219 @@
+<nav class="navbar navbar-dark jh-navbar">
+    <div class="jh-logo-container float-xs-left">
+        <a class="jh-navbar-toggler hidden-lg-up float-xs-left" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
+            <i class="fa fa-bars"></i>
+        </a>
+        <a class="navbar-brand logo float-xs-right" routerLink="/" (click)="collapseNavbar()">
+            <span class="logo-img"></span>
+            <span class="navbar-title">MyJiR</span> <span class="navbar-version">{{version}}</span>
+        </a>
+    </div>
+    <div class="collapse navbar-toggleable-md float-lg-right" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
+        <ul class="nav navbar-nav float-lg-right">
+
+            <li *jhiHasAnyAuthority="'ROLE_USER'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <jgroup-storage></jgroup-storage>
+            </li>
+
+            <li *jhiHasAnyAuthority="'ROLE_USER'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <button type="button"  [routerLink]="['/', { outlets: { popup: ['task-official-new'] } }]"
+                        class="btn btn-outline-primary">Create task</button>
+            </li>
+
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a *ngSwitchCase="true" class="nav-link" routerLink="/home" (click)="collapseNavbar()">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span class="hidden-sm-down">Home</span>
+                </a>
+                <a *ngSwitchCase="false" class="nav-link" routerLink="/" (click)="collapseNavbar()">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span class="hidden-sm-down">Home</span>
+                </a>
+            </li>
+
+            <li *jhiHasAnyAuthority="'ROLE_USER'" ngbDropdown class="nav-item dropdown pointer">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="projects">
+                    <i class="fa fa-briefcase" aria-hidden="true"></i>
+                    <span class="hidden-sm">
+                      Projects
+                    </span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="/project" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-archive" aria-hidden="true"></i>
+                            <span>Project Section</span>
+                        </a>
+                    </li>
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="/project/all/view" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-object-group" aria-hidden="true"></i>
+                            <span>Existing Projects</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li *jhiHasAnyAuthority="'ROLE_USER'" ngbDropdown class="nav-item dropdown pointer">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="backlog-menu">
+                    <i class="fa fa-street-view" aria-hidden="true"></i>
+                    <span class="hidden-sm">
+                      Agile
+                    </span>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="agile/sprint-profile/0" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-cogs" aria-hidden="true"></i>
+                            <span>Agile Profile</span>
+                        </a>
+                    </li>
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="agile/backlog" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-book" aria-hidden="true"></i>
+                            <span>Backlog</span>
+                        </a>
+                    </li>
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="agile/sprintView" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
+                            <span>Sprint</span>
+                        </a>
+                    </li>
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="agile/reportView/0" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-line-chart" aria-hidden="true"></i>
+                            <span>Report</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item" *ngSwitchCase="true">
+                <a class="nav-link" routerLink="/search" (click)="collapseNavbar()">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <span class="hidden-sm-down">Search</span>
+                </a>
+            </li>
+
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
+                    <span>
+                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                        <span class="hidden-sm-down">Administration</span>
+                        <b class="caret"></b>
+                    </span>
+                </a>
+                <ul class="dropdown-menu" ngbDropdownMenu>
+                    <li>
+                        <a class="dropdown-item" routerLink="admin/user-management" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-user" aria-hidden="true"></i>
+                            <span>User management</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="admin/jhi-metrics" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>
+                            <span>Metrics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="admin/jhi-health" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-heart" aria-hidden="true"></i>
+                            <span>Health</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="admin/jhi-configuration" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-list" aria-hidden="true"></i>
+                            <span>Configuration</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="admin/audits" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-bell" aria-hidden="true"></i>
+                            <span>Audits</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="admin/logs" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-tasks" aria-hidden="true"></i>
+                            <span>Logs</span>
+                        </a>
+                    </li>
+                    <li *ngIf="swaggerEnabled">
+                        <a class="dropdown-item" routerLink="admin/docs" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-book" aria-hidden="true"></i>
+                            <span>API</span>
+                        </a>
+                    </li>
+                    <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
+                </ul>
+            </li>
+
+            <li class="nav-item" *ngSwitchCase="true">
+                <a class="nav-link" routerLink="/faq" (click)="collapseNavbar()">
+                    <i class="fa fa-info" aria-hidden="true"></i>
+                    <span class="hidden-sm-down">FAQ</span>
+                </a>
+            </li>
+
+            <li ngbDropdown class="nav-item dropdown pointer">
+                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
+                  <span *ngIf="!getImageUrl()">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span class="hidden-sm">
+                      Account
+                    </span>
+                    <b class="caret"></b>
+                  </span>
+                  <span *ngIf="getImageUrl()">
+                      <img [src]="getImageUrl()" class="profile-image img-circle" alt="Avatar">
+                  </span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" routerLink="password" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
+                            <span>Password</span>
+                        </a>
+                    </li>
+                    <!--<li *ngSwitchCase="true">-->
+                        <!--<a class="dropdown-item" routerLink="sessions" routerLinkActive="active" (click)="collapseNavbar()">-->
+                            <!--<i class="fa fa-fw fa-cloud" aria-hidden="true"></i>-->
+                            <!--<span>Sessions</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <li *ngSwitchCase="true">
+                        <a class="dropdown-item" (click)="logout()" id="logout">
+                            <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
+                            <span>Sign out</span>
+                        </a>
+                    </li>
+                    <li *ngSwitchCase="false">
+                        <a class="dropdown-item" (click)="login()" id="login">
+                            <i class="fa fa-fw fa-sign-in" aria-hidden="true"></i>
+                            <span>Sign in</span>
+                        </a>
+                    </li>
+                    <li *ngSwitchCase="false">
+                        <a class="dropdown-item" routerLink="register" routerLinkActive="active" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-registered" aria-hidden="true"></i>
+                            <span>Register</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</nav>

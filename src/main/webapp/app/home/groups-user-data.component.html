@@ -1,0 +1,1060 @@
+<div class="row">
+    <div class="col-md-9">
+
+                <!--ALL SPECIFIC JGROUP INFORMATIONS -->
+
+                <ng-container *ngIf="jGroups?.length == 0">
+                    <p-panel>
+                        <p-header>
+                            <div class="ui-helper-clearfix">
+                                <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px; font-weight: bold;">Groups Data</span>
+                            </div>
+                        </p-header>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="jumbotron alert-warning">
+                                    <div class="content-center">
+                                        <hr>
+                                        <h2>Since You do not belong to any of the projects' groups: </h2>
+                                        <br>
+                                        <p>You can send request to join some that are already created within existing projects.</p>
+                                        <br>
+                                        <p><a class="btn btn-warning btn-lg"
+                                              [routerLink]="['/', 'project', 'all', 'view']"
+                                              role="button">Check out existing projects</a></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="jumbotron alert-success">
+                                    <div class="content-center">
+                                        <hr>
+                                        <h2>If You do not want to join any existing projects' groups: </h2>
+                                        <br>
+                                        <p>You can create a new project and group and ask others to join.</p>
+                                        <br>
+                                        <p><a class="btn btn-success btn-lg"
+                                              [routerLink]="['/', 'project']"
+                                              role="button">Create your own project</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="jumbotron alert-info">
+                            <div class="content-center">
+                                <hr>
+                                <h2>If You are logged in for the first time:</h2>
+                                <br>
+                                <p>Check the FAQ section to learn how to start.</p>
+                                <br>
+                                <p><a class="btn btn-info btn-lg"
+                                      [routerLink]="['/', 'faq']"
+                                      role="button">FAQ</a></p>
+                            </div>
+                        </div>
+
+                    </p-panel>
+
+                </ng-container>
+
+                <div *ngIf="jGroups?.length > 0" class="tabs">
+
+                    <ng-container *ngIf="theFirstJGroupFound">
+                        <input name="tabs" type="radio" id="{{theFirstJGroupFound?.id}}" checked="checked" class="input"/>
+                        <label for="{{theFirstJGroupFound?.id}}" class="label">Group: {{theFirstJGroupFound?.name}}</label>
+                        <div class="panel">
+                                <div class="row">
+                                    <div class="col-md-2" style="margin-top:5px;">
+                                        <div class="container">
+
+                                        <ng-container *ngIf="!jGroupsImgMap">
+                                            <ng-container *ngIf="!jGroupsImgMap[theFirstJGroupFound.id]">
+                                                <img src="users.png" alt="jGroup Img" class="img-thumbnail"/>
+                                            </ng-container>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="jGroupsImgMap">
+
+                                            <ng-container *ngIf="!jGroupsImgMap[theFirstJGroupFound.id]">
+                                                <img src="users.png" alt="jGroup Img" class="img-thumbnail"/>
+                                            </ng-container>
+
+                                            <ng-container *ngIf="jGroupsImgMap[theFirstJGroupFound.id]">
+                                                <img class="img-thumbnail" [src]="'data:' + jGroupsImgMap[theFirstJGroupFound.id]?.contentContentType + ';base64,' + jGroupsImgMap[theFirstJGroupFound.id]?.content" alt="jGroup Img"/>
+                                            </ng-container>
+
+                                        </ng-container>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <h1>Group:</h1>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <h1 [routerLink]="['../j-group', theFirstJGroupFound?.id ]" style="cursor: pointer;">{{theFirstJGroupFound?.name}}</h1>
+                                                <br>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <h6>Created date:</h6>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <h6>{{theFirstJGroupFound?.createdDate | date:'medium'}}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <h6>Modified date:</h6>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <h6>{{theFirstJGroupFound?.modifyDate | date:'medium'}}</h6>
+                                                <br>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <p>Description:</p>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <p *ngIf="theFirstJGroupFound?.description">{{theFirstJGroupFound?.description}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <p>Lifecycle:</p>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <ng-container *ngIf="theFirstJGroupFound?.lifeCycle == 'ACTIVE'">
+                                                    <p class="alert alert-success" role="alert"><b>{{theFirstJGroupFound?.lifeCycle}}</b></p>
+                                                </ng-container>
+                                                <ng-container *ngIf="theFirstJGroupFound?.lifeCycle == 'INACTIVE'">
+                                                    <p class="alert alert-warning" role="alert"><b>{{theFirstJGroupFound?.lifeCycle}}</b></p>
+                                                </ng-container>
+                                                <ng-container *ngIf="theFirstJGroupFound?.lifeCycle == 'DEPRECATED'">
+                                                    <p class="alert alert-info" role="alert"><b>{{theFirstJGroupFound?.lifeCycle}}</b></p>
+                                                </ng-container>
+                                                <ng-container *ngIf="theFirstJGroupFound?.lifeCycle == 'TERMINATED'">
+                                                    <p class="alert alert-danger" role="alert"><b>{{theFirstJGroupFound?.lifeCycle}}</b></p>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <div class="col-md-12">
+                                <br>
+                                <br>
+                                <br>
+                            </div>
+
+                            <div class="col-md-12">
+
+                                    <ng-container *ngIf="tasksMap">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Title</th>
+                                                <th>Created</th>
+                                                <th>Modified</th>
+                                                <th>Type</th>
+                                                <th>Priority</th>
+                                                <th>Env.</th>
+                                                <th>Remaining</th>
+                                                <th>Sprint</th>
+                                                <th>Assignee</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <ng-container *ngFor="let task of tasksMap[theFirstJGroupFound?.id]; trackBy: trackId">
+                                                <tr [routerLink]="['../task/view', task?.id ]" style="cursor: pointer">
+                                                    <th scope="row">{{task?.id}}</th>
+                                                    <td><b>{{task?.title}}</b></td>
+                                                    <td><span style="font-size: 13px" [innerHTML]="dateUtilStaticRef.formatDate(task?.createdDate)"></span></td>
+                                                    <td><span  style="font-size: 13px" [innerHTML]="dateUtilStaticRef.formatDate(task?.modifyDate)"></span></td>
+                                                    <td><span [innerHTML] ="taskIconStaticRef.getTypeIcon(task?.type)"></span></td>
+                                                    <ng-container *ngIf="task?.priority == 'MAJOR'">
+                                                        <td class="alert alert-info">{{task?.priority}}</td>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="task?.priority == 'MINOR'">
+                                                        <td class="alert alert-warning">{{task?.priority}}</td>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="task?.priority == 'BLOCKER'">
+                                                        <td class="alert alert-danger">{{task?.priority}}</td>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="task?.priority == 'TRIVIAL'">
+                                                        <td class="alert alert-success">{{task?.priority}}</td>
+                                                    </ng-container>
+                                                    <td>{{task?.enviroment}}</td>
+                                                    <td>{{task?.remainingTime}}</td>
+
+                                                    <!--<ng-container *ngIf="task?.sprint">-->
+                                                        <!--<ng-container *ngIf="task?.sprint.lifeCycle == 'ACTIVE'">-->
+                                                            <!--<td class="alert alert-success" role="alert">{{task?.sprint?.lifeCycle}}</td>-->
+                                                        <!--</ng-container>-->
+                                                        <!--<ng-container *ngIf="task?.sprint.lifeCycle == 'OUTDATED'">-->
+                                                            <!--<td class="alert alert-warning" role="alert">{{task?.sprint?.lifeCycle}}</td>-->
+                                                        <!--</ng-container>-->
+                                                        <!--<ng-container *ngIf="task?.sprint.lifeCycle == 'FUTURE'">-->
+                                                            <!--<td class="alert alert-info" role="alert">{{task?.sprint?.lifeCycle}}</td>-->
+                                                        <!--</ng-container>-->
+                                                    <!--</ng-container>-->
+                                                    <ng-container *ngIf="!task?.sprint">
+                                                        <td>NONE</td>
+                                                    </ng-container>
+
+                                                    <ng-container *ngIf="task?.sprint">
+                                                    <td><a *ngIf="task?.sprint" [routerLink]="['/agile/sprint-profile', task?.sprint?.id]">{{task?.sprint?.title}}</a></td>
+                                                    </ng-container>
+
+                                                    <td>{{task?.assignee?.user?.login}}</td>
+                                                </tr>
+                                            </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </ng-container>
+
+                            </div>
+
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="theRestJGroupFound">
+                        <ng-container *ngFor="let jGroup of theRestJGroupFound; trackBy: trackId">
+
+                            <input name="tabs" type="radio" id="{{jGroup?.name}}" class="input"/>
+                            <label for="{{jGroup?.name}}" class="label">Group: {{jGroup?.name}}</label>
+                                <div class="panel">
+                                    <div class="row">
+                                        <div class="col-md-2" style="margin-top:5px;">
+
+                                            <div class="container">
+                                            <ng-container *ngIf="!jGroupsImgMap">
+                                                <ng-container *ngIf="!jGroupsImgMap[jGroup.id]">
+                                                    <img src="users.png" alt="jGroup Img" class="img-thumbnail"/>
+                                                </ng-container>
+                                            </ng-container>
+
+                                            <ng-container *ngIf="jGroupsImgMap">
+
+                                                <ng-container *ngIf="!jGroupsImgMap[jGroup.id]">
+                                                    <img src="users.png" alt="jGroup Img" class="img-thumbnail"/>
+                                                </ng-container>
+
+                                                <ng-container *ngIf="jGroupsImgMap[jGroup.id]">
+                                                    <img class="img-thumbnail" [src]="'data:' + jGroupsImgMap[jGroup.id]?.contentContentType + ';base64,' + jGroupsImgMap[jGroup.id]?.content" alt="jGroup Img"/>
+                                                </ng-container>
+
+                                            </ng-container>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <h1>Group:</h1>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <h1 [routerLink]="['../../j-group', jGroup?.id ]" style="cursor: pointer">{{jGroup?.name}}</h1>
+                                                    <br>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <h6>Created date:</h6>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <h6>{{jGroup?.createdDate | date:'medium'}}</h6>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <h6>Modified date:</h6>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <h6>{{jGroup?.modifyDate | date:'medium'}}</h6>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <br>
+                                                    <p>Description:</p>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <br>
+                                                    <p *ngIf="jGroup?.description">{{jGroup.description}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <p>Lifecycle:</p>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <ng-container *ngIf="jGroup?.lifeCycle == 'ACTIVE'">
+                                                        <p class="alert alert-success" role="alert"><b>{{jGroup?.lifeCycle}}</b></p>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="jGroup?.lifeCycle == 'INACTIVE'">
+                                                        <p class="alert alert-warning" role="alert"><b>{{jGroup?.lifeCycle}}</b></p>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="jGroup?.lifeCycle == 'DEPRECATED'">
+                                                        <p class="alert alert-info" role="alert"><b>{{jGroup?.lifeCycle}}</b></p>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="jGroup?.lifeCycle == 'TERMINATED'">
+                                                        <p class="alert alert-danger" role="alert"><b>{{jGroup?.lifeCycle}}</b></p>
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <br>
+                                        <br>
+                                        <br>
+                                    </div>
+
+                                    <div class="col-md-12 col-lg-12">
+
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Title</th>
+                                                <th>Created date</th>
+                                                <th>Modified date</th>
+                                                <th>Type</th>
+                                                <th>Priority</th>
+                                                <th>Environment</th>
+                                                <th>Remaining time</th>
+                                                <th>Sprint</th>
+                                                <th>Assignee</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!--<ng-container *ngIf="theRestJGroupFound">-->
+                                                    <!--<ng-container *ngFor="let jGroup of theRestJGroupFound; trackBy: trackId">-->
+                                                        <ng-container *ngIf="tasksMap">
+                                                            <ng-container *ngFor="let task of tasksMap[jGroup?.id]; trackBy: trackId">
+
+                                                                <tr [routerLink]="['../task/view', task?.id ]" style="cursor: pointer">
+                                                                    <th scope="row">{{task?.id}}</th>
+                                                                    <td><b>{{task?.title}}</b></td>
+                                                                    <td><span style="font-size: 13px" [innerHTML]="dateUtilStaticRef.formatDate(task?.createdDate)"></span></td>
+                                                                    <td><span style="font-size: 13px" [innerHTML]="dateUtilStaticRef.formatDate(task?.modifyDate)"></span></td>
+                                                                    <td><span [innerHTML] ="taskIconStaticRef.getTypeIcon(task?.type)"></span></td>
+                                                                    <ng-container *ngIf="task?.priority == 'MAJOR'">
+                                                                        <td class="alert alert-info">{{task?.priority}}</td>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="task?.priority == 'MINOR'">
+                                                                        <td class="alert alert-warning">{{task?.priority}}</td>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="task?.priority == 'BLOCKER'">
+                                                                        <td class="alert alert-danger">{{task?.priority}}</td>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="task?.priority == 'TRIVIAL'">
+                                                                        <td class="alert alert-success">{{task?.priority}}</td>
+                                                                    </ng-container>
+                                                                    <td>{{task?.enviroment}}</td>
+                                                                    <td>{{task?.remainingTime}}</td>
+
+                                                                    <!--<ng-container *ngIf="task?.sprint">-->
+
+                                                                        <!--<ng-container *ngIf="task?.sprint.lifeCycle == 'ACTIVE'">-->
+                                                                            <!--<td class="alert alert-success" role="alert">{{task?.sprint?.lifeCycle}}</td>-->
+                                                                        <!--</ng-container>-->
+                                                                        <!--<ng-container *ngIf="task?.sprint.lifeCycle == 'OUTDATED'">-->
+                                                                            <!--<td class="alert alert-warning" role="alert">{{task?.sprint?.lifeCycle}}</td>-->
+                                                                        <!--</ng-container>-->
+                                                                        <!--<ng-container *ngIf="task?.sprint.lifeCycle == 'FUTURE'">-->
+                                                                            <!--<td class="alert alert-info" role="alert">{{task?.sprint?.lifeCycle}}</td>-->
+                                                                        <!--</ng-container>-->
+
+                                                                    <!--</ng-container>-->
+                                                                    <ng-container *ngIf="!task?.sprint">
+                                                                        <td>NONE</td>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="task?.sprint">
+                                                                    <td><a *ngIf="task?.sprint" [routerLink]="['/agile/sprint-profile', task?.sprint?.id]">{{task?.sprint?.title}}</a></td>
+                                                                    </ng-container>
+
+                                                                    <td>{{task?.assignee?.user?.login}}</td>
+                                                                </tr>
+
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    <!--</ng-container>-->
+                                                <!--</ng-container>-->
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+                                </div>
+                        </ng-container>
+                    </ng-container>
+
+                </div>
+
+    </div>
+
+
+    <div class="col-md-3">
+        <p-panel>
+            <p-header>
+                <div class="ui-helper-clearfix">
+                    <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px; font-weight: bold;">Account details</span>
+
+                    <!--<button style="float: right;"-->
+                            <!--type="submit"-->
+                            <!--routerLink="settings"-->
+                            <!--replaceUrl="true"-->
+                            <!--class="btn btn-outline-primary btn-sm">-->
+                        <!--<span class="fa fa-pencil"></span>-->
+                        <!--<span class="hidden-md-down">Edit</span>-->
+                    <!--</button>-->
+
+                    <ng-container *ngIf="jUser">
+                        <button style="float: right;"
+                                type="submit"
+                                [routerLink]="['../j-user', jUser?.id ]"
+                                replaceUrl="true"
+                                class="btn btn-outline-primary btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="hidden-md-down">View</span>
+                        </button>
+                    </ng-container>
+
+                </div>
+            </p-header>
+            <div class="row">
+                <div class="col-md-8">
+                    <div *ngIf="jUser">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>First name:</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>{{jUser?.user?.firstName}}</h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Last name:</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>{{jUser?.user?.lastName}}</h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span>Login:</span>
+                            </div>
+                            <div class="col-md-6">
+                                <span>{{jUser?.user?.login}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span>Password:</span>
+                            </div>
+                            <div class="col-md-6">
+                                <a routerLink="password">Change Password</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                        <div *ngIf="!jUserImg">
+                            <img src="unknownUser.jpg" alt="jUser Img" class="img-thumbnail"/>
+                        </div>
+                        <div *ngIf="jUserImg?.content.length > 0">
+                            <img [src]="'data:' + jUserImg?.contentContentType + ';base64,' + jUserImg?.content" alt="jUserImg image" class="img-thumbnail"/>
+                        </div>
+                    <br>
+                </div>
+
+                <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <span>Email:</span>
+                    </div>
+                    <div class="col-md-9">
+                        <span style="word-wrap: break-word;">{{jUser?.user?.email}}</span>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </p-panel>
+
+                    <!--ALL CURRENT USER INFO END-->
+
+        <div>
+            <br>
+        </div>
+
+                    <!--TASKS ASSIGNED TO USER-->
+
+        <ng-container *ngIf="jUserTasks?.length == 0">
+            <p-panel>
+                <p-header>
+                    <div class="ui-helper-clearfix">
+                        <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px; font-weight: bold;">Tasks data</span>
+                    </div>
+                </p-header>
+                    <div class="content-center">
+                        <p>Since You are not involved in any tasks, there is no additional info.</p>
+                        <hr>
+                        <p>As soon as You will start working on tasks a specific info will appear here.</p>
+                    </div>
+            </p-panel>
+        </ng-container>
+
+
+        <ng-container *ngIf="jUserTasks?.length > 0">
+            <p-panel>
+                <p-header>
+                    <div class="ui-helper-clearfix">
+                        <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px; font-weight: bold;">Assigned to Me</span>
+                    </div>
+                </p-header>
+
+                <ng-container *ngIf="jUserTasks">
+                    <ng-container *ngFor="let task of jUserTasks; trackBy: trackId">
+
+                         <ng-container *ngIf="task?.type == 'TTASK'">
+                            <p-accordion>
+                                <p-accordionTab header="Technical task: {{task?.title}},  {{task?.id}}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Priority:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.priority}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Environment:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.enviroment}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Remaining time:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.remainingTime}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Estimate time:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.estimateTime}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Version:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.version}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <br>
+                                            <button type="submit"
+                                                    [routerLink]="['../task/view', task?.id ]"
+                                                    class="btn btn-outline-primary btn-sm">
+                                                <span class="hidden-md-down">Go to task</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </p-accordionTab>
+                            </p-accordion>
+                         </ng-container>
+
+                        <ng-container *ngIf="task?.type == 'BUG'">
+                            <p-accordion>
+                                <p-accordionTab header="Bug: {{task?.title}},  {{task?.id}}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Priority:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.priority}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Environment:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.enviroment}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Remaining time:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.remainingTime}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Estimate time:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.estimateTime}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Version:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.version}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <br>
+                                            <button type="submit"
+                                                    [routerLink]="['../task/view', task?.id ]"
+                                                    class="btn btn-outline-primary btn-sm">
+                                                <span class="hidden-md-down">Go to task</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </p-accordionTab>
+                            </p-accordion>
+                        </ng-container>
+
+                        <ng-container *ngIf="task?.type == 'NABUG'">
+                            <p-accordion>
+                                <p-accordionTab header="Not a bug: {{task?.title}},  {{task?.id}}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Priority:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.priority}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Environment:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.enviroment}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Remaining time:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.remainingTime}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Estimate time:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.estimateTime}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Version:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.version}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <br>
+                                            <button type="submit"
+                                                    [routerLink]="['../task/view', task?.id ]"
+                                                    class="btn btn-outline-primary btn-sm">
+                                                <span class="hidden-md-down">Go to task</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </p-accordionTab>
+                            </p-accordion>
+                        </ng-container>
+
+                        <ng-container *ngIf="task?.type == 'STORY'">
+                            <p-accordion>
+                                <p-accordionTab header="Story: {{task?.title}},  {{task?.id}}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Priority:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.priority}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Environment:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.enviroment}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Remaining time:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.remainingTime}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Estimate time:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.estimateTime}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Version:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.version}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <br>
+                                            <button type="submit"
+                                                    [routerLink]="['../task/view', task?.id ]"
+                                                    class="btn btn-outline-primary btn-sm">
+                                                <span class="hidden-md-down">Go to task</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </p-accordionTab>
+                            </p-accordion>
+                        </ng-container>
+
+                        <ng-container *ngIf="task?.type == 'EPIC'">
+                            <p-accordion>
+                                <p-accordionTab header="Epic: {{task?.title}},  {{task?.id}}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Priority:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.priority}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Environment:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.enviroment}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Remaining time:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.remainingTime}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Estimate time:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.estimateTime}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Version:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.version}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <br>
+                                            <button type="submit"
+                                                    [routerLink]="['../task/view', task?.id ]"
+                                                    class="btn btn-outline-primary btn-sm">
+                                                <span class="hidden-md-down">Go to task</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </p-accordionTab>
+                            </p-accordion>
+                        </ng-container>
+
+                        <ng-container *ngIf="task?.type == 'DOCUTASK'">
+                            <p-accordion>
+                                <p-accordionTab header="Documentation: {{task?.title}},  {{task?.id}}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Priority:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.priority}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Environment:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.enviroment}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Remaining time:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.remainingTime}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Estimate time:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.estimateTime}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Version:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.version}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <br>
+                                            <button type="submit"
+                                                    [routerLink]="['../task/view', task?.id ]"
+                                                    class="btn btn-outline-primary btn-sm">
+                                                <span class="hidden-md-down">Go to task</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </p-accordionTab>
+                            </p-accordion>
+                        </ng-container>
+
+                        <ng-container *ngIf="task?.type == 'ADMINTASK'">
+                            <p-accordion>
+                                <p-accordionTab header="Administration task: {{task?.title}},  {{task?.id}}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Priority:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.priority}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Environment:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.enviroment}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Remaining time:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.remainingTime}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Estimate time:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.estimateTime}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Version:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.version}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <br>
+                                            <button type="submit"
+                                                    [routerLink]="['../task/view', task?.id ]"
+                                                    class="btn btn-outline-primary btn-sm">
+                                                <span class="hidden-md-down">Go to task</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </p-accordionTab>
+                            </p-accordion>
+                        </ng-container>
+
+                        <ng-container *ngIf="task?.type == 'ADHOC'">
+                            <p-accordion>
+                                <p-accordionTab header="Ad hoc task: {{task?.title}},  {{task?.id}}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Priority:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.priority}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Environment:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.enviroment}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Remaining time:</h6>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>{{task?.remainingTime}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Estimate time:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.estimateTime}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span>Version:</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>{{task?.version}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <br>
+                                            <button type="submit"
+                                                    [routerLink]="['../task/view', task?.id ]"
+                                                    class="btn btn-outline-primary btn-sm">
+                                                <span class="hidden-md-down">Go to task</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </p-accordionTab>
+                            </p-accordion>
+                        </ng-container>
+
+                        <!--<p-accordionTab header="{{task?.type}}: {{task?.title}},  {{task?.id}}">&ndash;&gt;-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-6">-->
+                                        <!--<h6>Priority:</h6>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-6">-->
+                                        <!--<h6>{{task?.priority}}</h6>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-6">-->
+                                        <!--<h6>Environment:</h6>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-6">-->
+                                        <!--<h6>{{task?.enviroment}}</h6>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-6">-->
+                                        <!--<h6>Remaining time:</h6>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-6">-->
+                                        <!--<h6>{{task?.remainingTime}}</h6>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-6">-->
+                                        <!--<p>Estimate time:</p>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-6">-->
+                                        <!--<p>{{task?.estimateTime}}</p>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-6">-->
+                                        <!--<p>Version:</p>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-6">-->
+                                        <!--<p>{{task?.version}}</p>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-12">-->
+                                        <!--<p>Description:</p>-->
+                                    <!--</div>-->
+                                    <!--<ng-container *ngIf="jUserTasksDescriptions[task?.id]">-->
+                                       <!--<div class="col-md-12">-->
+                                           <!--<p>{{jUserTasksDescriptions[task?.id]?.content}}</p>-->
+                                       <!--</div>-->
+                                    <!--</ng-container>-->
+                                <!--</div>-->
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-12">-->
+                                        <!--<button type="submit"-->
+                                                <!--[routerLink]="['../task', task?.id]"-->
+                                                <!--class="btn btn-outline-primary btn-sm">-->
+                                            <!--<span class="hidden-md-down">Go to task</span>-->
+                                        <!--</button>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                        <!--</p-accordionTab>-->
+                    <!--</p-accordion>-->
+
+                    <!--END OF ASSIGNED TO USER-->
+
+                    </ng-container>
+                </ng-container>
+            </p-panel>
+        </ng-container>
+    </div>
+</div>
+
+
+

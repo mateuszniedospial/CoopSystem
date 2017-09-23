@@ -1,0 +1,35 @@
+.right-footer-side{
+    margin-right: 10px;
+    text-align: right;
+}
+
+.left-footer-side{
+    text-align: left;
+}
+
+html,body{
+    height: 100%
+}
+
+#holder {
+    min-height: 100%;
+    position:relative;
+}
+
+ul.footer {
+    margin-top: 10px;
+    text-align: center;
+}
+
+ul.footer li {
+    color: #333;
+    display: inline-block;
+}
+
+#footer {
+    bottom: -50px;
+    height: 75px;
+    left: 0;
+    position: absolute;
+    right: 0;
+}

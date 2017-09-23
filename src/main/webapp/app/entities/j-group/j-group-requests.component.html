@@ -1,0 +1,117 @@
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <ng-container *ngIf="!doesBelong">
+        <span>You must have permission to access this data.</span>
+    </ng-container>
+
+    <ng-container *ngIf="doesBelong">
+
+        <hr>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="text-align: center;">
+                    <button
+                        [routerLink]="['../']"
+                        type="button"
+                        class="btn btn-outline-danger">
+                        <span class="fa fa-undo"></span>
+                        <span class="hidden-md-down">Return to group</span>
+                    </button>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="text-align: center;">
+                    <ng-container *ngIf="requests">
+                        <h3 style="text-align: center">
+                            <b>All Requests</b>
+                        </h3>
+                    </ng-container>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="text-align: center;">
+                    <button
+                        [routerLink]="['../../../']"
+                        type="button"
+                        class="btn btn-outline-warning">
+                        <span class="fa fa-share"></span>
+                        <span class="hidden-md-down">Account main page</span>
+                    </button>
+                </div>
+            </div>
+            <hr>
+
+            <ng-container *ngIf="requests">
+
+                <ng-container *ngIf="requests.length == 0">
+                    <h5> Currently there are no requests. </h5>
+                </ng-container>
+
+                <ng-container *ngIf="requests.length > 0">
+                <div class="bs-callout bs-callout-default">
+                    <!--Section of my projects -->
+                    <h5>Requests</h5>
+                    The list of all requests:
+                    <br>
+
+                    <ng-container *ngIf="requests">
+                        <ng-container *ngFor="let request of requests; trackBy: trackId">
+                            <br>
+                            <p-panel>
+                                <p-header>
+                                    <div class="ui-helper-clearfix">
+                                        <div class="row">
+                                            <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="text-align: center; margin-top:6px;">
+                                                <button type="submit"
+                                                        [routerLink]="['../../../j-user', request?.whoRequested?.id]"
+                                                        replaceUrl="true"
+                                                        class="btn btn-info btn-sm">
+                                                    <span class="fa fa-eye"></span>
+                                                    <span class="hidden-md-down">View</span>
+                                                </button>
+                                            </div>
+                                            <div class="col-lg-11 col-md-11 col-sm-12 col-xs-12">
+                                                <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:8px"><h5><b>{{request?.id}}:  <span>{{request?.whoRequested?.user?.firstName}} {{request?.whoRequested?.user?.lastName}}</span>
+                                                </b></h5></span>
+                                                <div class="float-xs-right">
+                                                    <button pButton type="button" icon="fa fa-check" class="ui-button-success" (click)="acceptRequest(request)" label="Accept"></button>
+                                                    <button pButton type="button" icon="fa fa-times" class="ui-button-danger" (click)="rejectRequest(request)" label="Reject"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </p-header>
+                                <div class="row">
+                                    <ng-container *ngIf="requestsImgMap">
+                                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" style="text-align: center;">
+                                            <ng-container *ngIf="!requestsImgMap[request?.id]">
+                                                <img src="unknownUser.jpg" alt="Project Img" class="img-thumbnail img-profile-size"/>
+                                            </ng-container>
+
+                                            <ng-container *ngIf="requestsImgMap[request?.id]">
+                                                <ng-container *ngIf="requestsImgMap[request?.id]?.content.length > 0">
+                                                    <img class="img-thumbnail img-profile-size" [src]="'data:' + requestsImgMap[request?.id]?.contentContentType + ';base64,' + requestsImgMap[request?.id]?.content" alt="Project Img"/>
+                                                </ng-container>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                    <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+                                        <span><b>Why does {{request?.whoRequested?.user?.firstName}} want to join the group</b></span>
+                                        <hr>
+                                        <span style="word-wrap: break-word">
+                                             {{request?.description}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </p-panel>
+
+                        </ng-container>
+                    </ng-container>
+
+                </div>
+                </ng-container>
+
+            </ng-container>
+
+        </div>
+
+
+    </ng-container>
+
+</div>

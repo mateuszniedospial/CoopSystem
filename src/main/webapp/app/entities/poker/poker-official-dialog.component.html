@@ -1,0 +1,101 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+            (click)="clear()">&times;</button>
+    <h4 class="modal-title" id="myPokerLabel">Let's play for task: <span style="color: green"><b>[{{poker?.task?.id}}] {{poker?.task?.title}}</b></span></h4>
+</div>
+<div class="modal-body">
+    <p-growl [value]="msgs" sticky="sticky"></p-growl>
+
+    <div class="container">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Choose your card:</h5>
+                    <br>
+                </div>
+                <!--<div class="col-md-6">-->
+                    <!--<button type="button" (click)="play()" class="btn btn-success">Play</button>-->
+                <!--</div>-->
+            </div>
+            <div class="row">
+                <button id="c1" class="col-md-3 poker-card pk1" (click)="vote(0.5)"><span class="tag tag-default t1">0.5</span></button>
+                <button id="c2" class="col-md-3 poker-card pk2" (click)="vote(1)"><span class="tag tag-info t2">1</span></button>
+                <button id="c3" class="col-md-3 poker-card pk2" (click)="vote(2)"><span class="tag tag-info t2">2</span></button>
+                <button id="c4" class="col-md-3 poker-card pk3" (click)="vote(3)"><span class="tag tag-primary t3">3</span></button>
+
+            </div>
+            <div class="row">
+                <button id="c5" class="col-md-3 poker-card pk3" (click)="vote(5)"><span class="tag tag-primary t3">5</span></button>
+                <button id="c6" class="col-md-3 poker-card pk4" (click)="vote(7)"><span class="tag tag-success t4">7</span></button>
+                <button id="c7" class="col-md-3 poker-card pk4" (click)="vote(8)"><span class="tag tag-success t4">8</span></button>
+                <button id="c8" class="col-md-3 poker-card pk5" (click)="vote(10)"><span class="tag tag-warning t5">10</span></button>
+
+            </div>
+            <div class="row">
+                <button id="c9" class="col-md-3 poker-card pk5" (click)="vote(12)"><span class="tag tag-warning t5">12</span></button>
+                <button id="c10" class="col-md-3 poker-card pk6" (click)="vote(15)"><span class="tag tag-danger t6">15</span></button>
+                <button id="c11" class="col-md-3 poker-card pk6" (click)="vote(20)"><span class="tag tag-danger t6">20</span></button>
+                <button id="c12"class="col-md-3 poker-card pk6" (click)="vote(100)"><span class="tag tag-danger t6">100</span></button>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <button type="button" (click)="restartGame()"  class="btn btn-primary">Restart game</button>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" (click)="stopGame()"  class="btn btn-danger">Stop game</button>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" (click)="showCards()"  class="btn btn-warning">Show cards</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <br>
+                    <h5>Contest:</h5>
+                </div>
+                <div class="col-md-6">
+                    <br>
+                    <h5>Set Estimate:</h5>
+                </div>
+            </div>
+            <div *ngIf="isNotStoped" class="col-md-6">
+                <br>
+                <div class="row" *ngFor="let juser of jgroup?.jusers">
+                    <div class="col-md-6"><h6>{{juser.user.login}}</h6></div>
+                    <div class="col-md-6">
+                        <button class="col-md-12 poker-card-min"></button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isStoped" class="col-md-6">
+                <br>
+                <div class="row" *ngFor="let juser of jgroup?.jusers">
+                    <div class="col-md-6"><h6>{{juser.user.login}}</h6></div>
+                    <div class="col-md-6">
+                        <button class="col-md-12 poker-card-min show"><span [innerHTML]="findCard(juser)"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <br>
+                    <b>Average result: {{average}}</b>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <br>
+                <input type="input" class="form-control"
+                       [(ngModel)]="poker.task.estimateTime"/>
+                <br>
+                <button type="button" (click)="saveEstimate()"  class="btn btn-success">Save</button>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="modal-footer">
+</div>

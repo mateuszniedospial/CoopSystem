@@ -1,0 +1,356 @@
+<div class="card">
+    <p-growl [value]="msgs" sticky="sticky"></p-growl>
+    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top: -50px">
+        <!--<div class="jumbotron no-margin">-->
+        <div class="bs-callout bs-callout-success">
+            <br>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                            <div class="img-size-max">
+                                <ng-container *ngIf="!jGroupImg">
+                                    <img src="users.png" alt="jGroup Img" class="img-thumbnail"/>
+                                </ng-container>
+                                <ng-container *ngIf="jGroupImg">
+                                    <img [src]="'data:' + jGroupImg?.contentContentType + ';base64,' + jGroupImg?.content" alt="jGroupImg image" class="img-thumbnail img-size-max"/>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                            <ng-container *ngIf="jGroup">
+                                <h2><b>Group:</b> {{jGroup?.name}}</h2>
+                                <h6>ID: <span style="font-weight: normal">{{jGroup?.id}}</span></h6>
+                                <h6>Lifecycle: <span style="font-weight: bold">{{jGroup?.lifeCycle}}</span></h6>
+                            </ng-container>
+
+
+                            <ng-container *ngIf="(!doesBelong) && (!didSendRequest)">
+                                <button type="submit"
+                                        [routerLink]="['/', {outlets: { popup: ['join-j-group-request-new', {jgroupid:jGroup?.id, whoRequested:activeJUser?.id}] } }]"
+                                        replaceUrl="true"
+                                        class="btn btn-success">
+                                    <span class="fa fa-envelope"></span>
+                                    <span class="hidden-md-down">Send request to join the group</span>
+                                </button>
+                            </ng-container>
+                            <ng-container *ngIf="doesBelong">
+                                <ng-container *ngIf="joinRequests?.length > 0">
+                                    <a class="btn btn-warning float-xs-left"
+                                       [routerLink]="['../../j-group', jGroup.id, 'requests']"
+                                       role="button"><span class="fa fa-envelope"></span> New requests to join the group are pending!</a>
+                                </ng-container>
+                            </ng-container>
+                            <ng-container *ngIf="didSendRequest">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 alert alert-success" style="color: #35703b"><b>Your request awaits acceptance</b></div>
+                            </ng-container>
+
+                        </div>
+                        <ng-container *ngIf="doesBelong">
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12" style="text-align: center; padding-top: 20px">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <ng-container *ngIf="!jGroupImg">
+                                            <button class="btn btn-success create-j-group-img" [routerLink]="['/', { outlets: { popup: ['j-group-img-new', {jgroupid:jGroup?.id}] } }]">
+                                                <span class="fa fa-picture-o"></span>
+                                                <span>
+                                                Add Image
+                                            </span>
+                                            </button>
+                                        </ng-container>
+                                        <ng-container *ngIf="jGroupImg">
+                                            <button class="btn btn-success create-j-group-img" [routerLink]="['/', { outlets: { popup: ['j-group-img-new', {jgroupid:jGroup?.id, imgId:jGroupImg?.id}] } }]">
+                                                <span class="fa fa-picture-o"></span>
+                                                <span>
+                                                Change Image
+                                            </span>
+                                            </button>
+                                        </ng-container>
+
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <button class="btn btn-danger create-j-group-img" [routerLink]="['/', { outlets: { popup: ['j-group', 'leave', {groupId:jGroup?.id, leaverId:activeJUser?.id}] } }]">
+                                            <span class="fa fa-user-times"></span>
+                                            <span>
+                                                Leave Group
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <hr>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="col-md-12">
+                        <p-panel>
+                            <p-header>
+                                <div class="ui-helper-clearfix">
+                                    <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px; font-weight: bold;">Details</span>
+                                </div>
+                            </p-header>
+                            <ng-container *ngIf="jGroup">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <span style="color: #666666"><b>Name:</b></span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <span style="font-weight: normal; color: #262626">
+                                            <ndv-edit
+                                                [title]="'name'"
+                                                [permission]="checkPermissions(perm)"
+                                                [placeholder]="jGroup?.name"
+                                                (onSave)="saveMethod($event)">
+                                            </ndv-edit>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <span style="color: #666666"><b>Created date:</b></span>
+
+                                    </div>
+                                    <div class="col-md-8">
+                                        <span style="font-weight: normal; color: #262626">
+                                                {{jGroup?.createdDate | date:'medium'}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <span style="color: #666666"><b>Modified date:</b></span>
+
+                                    </div>
+                                    <div class="col-md-8">
+                                        <span style="font-weight: normal; color: #262626">{{jGroup?.modifyDate | date:'medium'}}</span>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span style="color: #666666"><b>Description:</b></span>
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <span style="font-weight: normal; color: #262626">
+                                                <ng-container *ngIf="jGroup">
+                                                  <ndv-area [title]="'description'"
+                                                            [permission]="checkPermissions()"
+                                                            [placeholder]="jGroup?.description"
+                                                            (onSave)="saveMethod($event)">
+                                                  </ndv-area>
+                                                </ng-container>
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                            </ng-container>
+                        </p-panel>
+                    </div>
+                    <div class="col-md-12">
+                        <hr>
+                    </div>
+                    <div class="col-md-12">
+
+                        <p-panel>
+                            <p-header>
+                                <div class="ui-helper-clearfix">
+                                    <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px; font-weight: bold;">Assigned users</span>
+                                </div>
+                            </p-header>
+
+                            <ng-container *ngIf="jGroup">
+                                <ng-container *ngFor="let jUser of jGroup?.jusers; trackBy: trackId">
+
+                                    <p-accordion>
+                                        <p-accordionTab header="{{jUser?.id}}: {{jUser?.user?.firstName}} {{jUser?.user?.lastName}}">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <h6>Login:</h6>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <h6>{{jUser?.user?.login}}</h6>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <h6>Name:</h6>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <h6>{{jUser?.user?.firstName}} {{jUser?.user?.lastName}}</h6>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <h6>Email:</h6>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <h6 style="word-wrap: break-word;">{{jUser?.user?.email}}</h6>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12"><br></div>
+                                                <div class="col-md-12">
+                                                    <button type="submit"
+                                                            [routerLink]="['/j-user', jUser?.id]"
+                                                            class="btn btn-outline-primary btn-sm">
+                                                        <span class="hidden-md-down">View profile</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </p-accordionTab>
+                                    </p-accordion>
+
+                                </ng-container>
+                            </ng-container>
+
+                        </p-panel>
+
+                     </div>
+                </div>
+                <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p-panel>
+                            <p-header>
+                                <div class="ui-helper-clearfix">
+                                    <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px; font-weight: bold;">Tasks</span>
+                                </div>
+                            </p-header>
+
+                            <ng-container *ngIf="tasks">
+                                <table class="table table-hover table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Created</th>
+                                        <th>Modified</th>
+                                        <th>Type</th>
+                                        <th>Priority</th>
+                                        <th>R.T</th>
+                                        <!--<th>Sprint</th>-->
+                                        <th>Assignee</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <ng-container *ngFor="let task of tasks; trackBy: trackId">
+                                        <tr [routerLink]="['../../task/view', task?.id ]" style="cursor: pointer">
+                                            <th scope="row">{{task?.id}}</th>
+                                            <td><b>{{task?.title}}</b></td>
+                                            <td><span style="font-size: 13px" [innerHTML]="dateUtilStaticRef.formatDate(task?.createdDate)"></span></td>
+                                            <td><span style="font-size: 13px" [innerHTML]="dateUtilStaticRef.formatDate(task?.modifyDate)"></span></td>
+                                            <td>  <span [innerHTML] ="taskIconStaticRef.getTypeIcon(task?.type)"></span></td>
+                                            <ng-container *ngIf="task?.priority == 'MAJOR'">
+                                                <td class="alert alert-info">{{task?.priority}}</td>
+                                            </ng-container>
+                                            <ng-container *ngIf="task?.priority == 'MINOR'">
+                                                <td class="alert alert-warning">{{task?.priority}}</td>
+                                            </ng-container>
+                                            <ng-container *ngIf="task?.priority == 'BLOCKER'">
+                                                <td class="alert alert-danger">{{task?.priority}}</td>
+                                            </ng-container>
+                                            <ng-container *ngIf="task?.priority == 'TRIVIAL'">
+                                                <td class="alert alert-success">{{task?.priority}}</td>
+                                            </ng-container>
+                                            <td>{{task?.remainingTime}}</td>
+                                            <!--<td>{{task?.sprint}}</td>-->
+                                            <td>{{task?.assignee?.user?.login}}</td>
+                                        </tr>
+                                    </ng-container>
+                                    </tbody>
+                                </table>
+                            </ng-container>
+
+                        </p-panel>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12">
+                        <hr>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12">
+                        <p-panel>
+                            <p-header>
+                                <div class="ui-helper-clearfix">
+                                    <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px; font-weight: bold;">Activity</span>
+                                </div>
+                            </p-header>
+
+                            <table class="table table-hover table-bordered">
+                                <tbody>
+
+                                <ng-container *ngIf="tasksHistories">
+
+                                    <ng-container *ngFor="let taskHistory of tasksHistories; trackBy: trackId">
+
+                                        <tr [routerLink]="['../../task/view', taskHistory?.task?.id ]" style="cursor: pointer">
+                                            <td>
+
+                                                <span [innerHTML] ="taskIconStaticRef.getTypeIcon(taskHistory?.task?.type)"></span>
+
+                                                <span class="taskHistoryDecoration"> - {{taskHistory?.modifiedJUser?.user?.firstName}} {{taskHistory?.modifiedJUser?.user?.lastName}}</span> changed the
+                                                <span class="taskHistoryDecoration2">{{taskHistory?.changedName}}</span> from:
+                                                <ng-container *ngIf="taskHistory?.changedName == description">
+                                                    <span class="taskHistoryDescriptionCaseDecoration">{{taskHistory?.oldContent}}</span> to:
+                                                    <span class="taskHistoryDescriptionCaseDecoration">{{taskHistory?.content}}</span> at:
+                                                </ng-container>
+                                                <ng-container *ngIf="taskHistory?.changedName != description">
+                                                    <span class="taskHistoryDecoration2">{{taskHistory?.oldContent}}</span> to:
+                                                    <span class="taskHistoryDecoration2">{{taskHistory?.content}}</span> at:
+                                                </ng-container>
+                                                <span class="taskHistoryDecoration2">{{taskHistory?.created_date | date: 'medium'}}</span> on:
+                                                <span class="taskHistoryDecoration2">{{taskHistory?.task?.title}}</span> (Priority:
+                                                <span class="taskHistoryDecoration2">{{taskHistory?.task?.priority}}</span>, Type:
+
+                                                <ng-container *ngIf="taskHistory?.task?.type == 'TTASK'">
+                                                    <span>Technical task</span>)
+                                                </ng-container>
+                                                <ng-container *ngIf="taskHistory?.task?.type == 'BUG'">
+                                                    <span>Bug</span>)
+                                                </ng-container>
+                                                <ng-container *ngIf="taskHistory?.task?.type == 'NABUG'">
+                                                    <span>Not a bug</span>)
+                                                </ng-container>
+                                                <ng-container *ngIf="taskHistory?.task?.type == 'STORY'">
+                                                    <span>Story</span>)
+                                                </ng-container>
+                                                <ng-container *ngIf="taskHistory?.task?.type == 'EPIC'">
+                                                    <span>Epic</span>)
+                                                </ng-container>
+                                                <ng-container *ngIf="taskHistory?.task?.type == 'DOCUTASK'">
+                                                    <span>Documentation</span>)
+                                                </ng-container>
+                                                <ng-container *ngIf="taskHistory?.task?.type == 'ADMINTASK'">
+                                                    <span>Administrative</span>)
+                                                </ng-container>
+                                                <ng-container *ngIf="taskHistory?.task?.type == 'ADHOC'">
+                                                    <span>Ad hoc</span>)
+                                                </ng-container>
+
+
+                                            </td>
+                                        </tr>
+
+                                    </ng-container>
+
+                                </ng-container>
+                                </tbody>
+                            </table>
+                        </p-panel>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

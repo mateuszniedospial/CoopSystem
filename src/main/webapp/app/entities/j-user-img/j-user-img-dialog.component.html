@@ -1,0 +1,53 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+        <h4 class="modal-title" id="myJUserImgLabel">Create or edit a J User Img</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!jUserImg.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="jUserImg.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_content">Content
+            <br> <b>It is optimal when image has even dimensions.</b>
+            </label>
+            <div>
+                <img [src]="'data:' + jUserImg.contentContentType + ';base64,' + jUserImg.content" style="max-height: 100px;" *ngIf="jUserImg.content" alt="jUserImg image"/>
+                <div *ngIf="jUserImg.content" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{jUserImg.contentContentType}}, {{byteSize(jUserImg.content)}}</span>
+                    <button type="button" (click)="jUserImg.content=null;jUserImg.contentContentType=null;"
+                            class="btn btn-default btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" (change)="setFileData($event, jUserImg, 'content', true)" accept="image/*"/>
+            </div>
+            <input type="hidden" class="form-control" name="content" id="field_content"
+                [(ngModel)]="jUserImg.content"
+             />
+            <input type="hidden" class="form-control" name="contentContentType" id="field_contentContentType"
+                [(ngModel)]="jUserImg.contentContentType" />
+        </div>
+
+        <!--<div class="form-group">-->
+            <!--<label for="field_juser">Juser</label>-->
+            <!--<select class="form-control" id="field_juser" name="juser" [(ngModel)]="jUserImg.juser">-->
+                <!--<option [ngValue]="null"></option>-->
+                <!--<option [ngValue]="jUserOption.id === jUserImg.juser?.id ? jUserImg.juser : jUserOption" *ngFor="let jUserOption of jusers; trackBy: trackJUserById">{{jUserOption.id}}</option>-->
+            <!--</select>-->
+        <!--</div>-->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

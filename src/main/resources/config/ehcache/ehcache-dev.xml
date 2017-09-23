@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns='http://www.ehcache.org/v3'
+         xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
+
+    <cache-template name="simple">
+        <expiry>
+            <ttl unit="seconds">3600</ttl>
+        </expiry>
+        <heap unit="entries">100</heap>
+    </cache-template>
+
+    <cache alias="com.coopsystem.domain.User" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Authority" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.User.authorities" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.PersistentToken" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.User.persistentTokens" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Ugroup" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.ProjectDocumentation" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.DocumentationHistory" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.JGroup" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.JGroup.jusers" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.JGroupImg" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.JUser" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.JUserImg" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Project" uses-template="simple"/>
+
+    <cache alias="jgroups" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Comment" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.ProjectImg" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Report" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Sprint" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.SprintDocument" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.SprintJUserPrivilege" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Task" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Task.watchers" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Task.children" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.TaskDescription" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Attachment" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.WorkLog" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.TaskHistory" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Poker" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.PokerVotes" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Poker.pokerVotes" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Task.historic_sprints" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Jcommit" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.Jcommit.tasks" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.DocumentationCatalogue" uses-template="simple"/>
+
+    <cache alias="com.coopsystem.domain.JoinJGroupRequest" uses-template="simple"/>
+
+    <!-- jhipster-needle-ehcache-add-entry -->
+</config>

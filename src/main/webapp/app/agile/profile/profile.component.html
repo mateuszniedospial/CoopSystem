@@ -1,0 +1,218 @@
+<div class="card" style="margin-top: -10px">
+    <p-growl [value]="msgs" sticky="sticky"></p-growl>
+    <!--Start of card header-->
+    <div class="card-header">
+        <h3><i class="fa fa-cogs" aria-hidden="true"></i> Agile Profile</h3>
+    </div>
+    <!--end of card header-->
+
+    <div class="card-block">
+
+        <div *ngIf="sprint">
+            <!--basic info section-->
+            <h5>Basic info :</h5>
+            <hr>
+            <div class="bs-callout bs-callout-success box-shadow">
+                <br>
+                <div style="margin-top: -20px">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <b>Started on:</b>
+                        </div>
+                        <div class="col-md-2">
+                            <b>End on:</b>
+                        </div>
+                        <div class="col-md-2">
+                            <b>LifeCycle:</b>
+                        </div>
+                        <div class="col-md-2">
+                            <b>Name:</b>
+                        </div>
+                        <div class="col-md-2">
+                            <b>&Sigma; Estimated:</b>
+                        </div>
+                        <div class="col-md-2">
+                            <b>&Sigma; Remaining:</b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <span [innerHTML]="formatDate(sprint.startTime)"></span>
+                        </div>
+                        <div class="col-md-2">
+                            <span [innerHTML]="formatDate(sprint.stopTime)"></span>
+                        </div>
+                        <div class="col-md-2">{{sprint.lifeCycle}}</div>
+                        <div class="col-md-2">
+                            <ndv-edit [title]="'title'"
+                                      [permission]="checkPermissions()"
+                                      [placeholder]="sprint.title"
+                                      (onSave)="saveMethod($event)">
+                            </ndv-edit>
+                        </div>
+                        <div class="col-md-2">{{sprint.sumOfEstimate}}</div>
+                        <div class="col-md-2">{{sprint.sumOfRemaining}}</div>
+                    </div>
+                </div>
+            </div>
+            <!--end of basic info section-->
+            <br>
+
+            <div class="row">
+                <!--description section-->
+                <div class="col-md-8">
+                    <h5>Description</h5>
+                    <hr>
+                    <div class="row bs-callout bs-callout-warning">
+                        <ndv-area [title]="'description'"
+                                  [permission]="checkPermissions()"
+                                  [placeholder]="sprint?.description"
+                                  (onSave)="saveMethod($event)">
+                        </ndv-area>
+                    </div>
+                </div>
+                <!-- end of description section-->
+
+                <!--related links section-->
+                <div class="col-md-4">
+                    <h5>Related links:</h5>
+                    <hr>
+                    <div class="row bs-callout bs-callout-primary">
+                        <div class="row">
+                            <div class="col-md-6"><b>Group:</b></div>
+                            <div class="col-md-6"><a [routerLink]="['/j-group', sprint?.jgroup?.id]"><i
+                                class="fa fa-users" aria-hidden="true"></i>
+                                {{jGroup?.name}}</a></div>
+                        </div>
+                        <div class="row" *ngIf="relatedProjects?.length > 0">
+                            <div class="col-md-6"><b>Projects:</b></div>
+                            <div class="col-md-6"><a [routerLink]="['/project', relatedProjects[0].id]"><i
+                                class="fa fa-university" aria-hidden="true"></i> {{relatedProjects[0].name}}</a></div>
+                        </div>
+                        <div *ngFor="let project of relatedProjects" class="row">
+                            <div *ngIf="relatedProjects[0].id != project.id" class="col-md-6"></div>
+                            <div *ngIf="relatedProjects[0].id != project.id" class="col-md-6"><a
+                                [routerLink]="['/project', project.id]"><i class="fa fa-university"
+                                                                           aria-hidden="true"></i> {{project.name}}</a>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf=" sprintId == 0">
+                            <div class="col-md-6"><b>Sprint table:</b></div>
+                            <div class="col-md-6"><a [routerLink]="['/sprinView']"><i class="fa fa-clock-o"
+                                                                                      aria-hidden="true"></i> Sprint
+                                table</a>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf=" sprintId == 0">
+                            <div class="col-md-6"><b>Backlog :</b></div>
+                            <div class="col-md-6"><a [routerLink]="['/agile/backlog']"><i class="fa fa-book"
+                                                                                    aria-hidden="true"></i> Backlog</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6"><b>Report :</b></div>
+                            <div class="col-md-6"><a [routerLink]="['/agile/reportView', sprintId]"><i
+                                class="fa fa-line-chart" aria-hidden="true"></i> Report</a></div>
+                        </div>
+                    </div>
+                </div>
+                <!--end of related links section-->
+
+            </div>
+            <div class="row">
+                <!--action section-->
+                <div class="col-md-12">
+                    <h5>Action:</h5>
+                    <hr>
+                    <div class="row bs-callout bs-callout-danger">
+                        <div class="col-md-4">
+                            <button *ngIf="sprint"
+                                    type="button"
+                                    (click)="onStopSprintClick()"
+                                    class="btn btn-danger ">
+                                Stop Sprint
+                            </button>
+
+                            <button *ngIf="sprint"
+                                    type="button"
+                                    (click)="onChangeDurationClick()"
+                                    class="btn btn-success ">
+                                Change duration
+                            </button>
+                        </div>
+                        <div class="col-md-1" *ngIf="showDuration">
+                            <ndv-select [title]="'duration'"
+                                        [permission]="true"
+                                        [items]="[1, 2, 3, 4]"
+                                        [placeholder]="duration"
+                                        (onSave)="saveMethod($event)">
+                            </ndv-select>
+                        </div>
+                        <div class="col-md-2" *ngIf="showDuration">
+                            Check duration time in weeks and submit.
+                        </div>
+                    </div>
+                </div>
+                <!--end of action section-->
+            </div>
+
+            <div class="row">
+                <!--retrospective section-->
+                <div class="col-md-12">
+                    <h5>Retrospective:</h5>
+                    <hr>
+                    <div class="row bs-callout bs-callout-info">
+                        <ndv-area [title]="'retrospective'"
+                                  [permission]="checkPermissions()"
+                                  [placeholder]="sprint?.retrospective"
+                                  (onSave)="saveMethod($event)">
+                        </ndv-area>
+                    </div>
+                </div>
+                <!-- end of retrospective section-->
+
+            </div>
+        </div>
+        <!--default sprint not exist section-->
+        <div *ngIf="!sprint && sprintId ==0 && !sprintExist">
+
+            <div class="row">
+                <h5>Create new sprint, active sprint does not exist:</h5>
+                <hr>
+
+                <div class="col-md-9 bs-callout bs-callout-success box-shadow" style="margin-top: -5px">
+                    <div class="row" style="margin-top: -10px">
+                        <div class="col-md-12">
+                            Upon clicking button <b>"Create Sprint"</b> instance of Sprint will be created in state future with default duration time equal to 1 week.
+                            Right after an agile profile will be shown for the current sprint. You'll be able to change the name of sprint, description, duration time and other elements.
+                            To start sprint simply go to backlog and add task to sprint using drag and drop function. After, click button "Start Sprint". The order is important because if you add
+                            task before starting the sprint, remaining function in report will be drawn properly.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="row" style="margin-top: -10px">
+                        <div class="col-md-2">
+                            <button type="button"
+                                    style="margin-top: 40px; margin-left: 40px"
+                                    (click)="onCreateSprintClick()"
+                                    class="btn btn-primary ">
+                                Create Sprint
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <!--end of default sprint not exist section-->
+    </div>
+
+    <div *ngIf="!sprint && sprintId !=0">
+        Sprint does not exist
+    </div>
+
+</div>

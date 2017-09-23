@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity JoinJGroupRequest.
+    -->
+    <changeSet id="20170612112834-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="j_group_id"
+                                 baseTableName="joinjgroup_request"
+                                 constraintName="fk_joinjgroup_request_j_group_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_group"/>
+
+        <addForeignKeyConstraint baseColumnNames="who_requested_id"
+                                 baseTableName="joinjgroup_request"
+                                 constraintName="fk_joinjgroup_request_who_requested_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_user"/>
+
+    </changeSet>
+</databaseChangeLog>

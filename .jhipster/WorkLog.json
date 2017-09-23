@@ -1,0 +1,53 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "juser",
+            "otherEntityName": "jUser",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "workLog"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "task",
+            "otherEntityName": "task",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "createdDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "modifyDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "startWork",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "stopWork",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "timeInHour",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170311112049",
+    "entityTableName": "work_log",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

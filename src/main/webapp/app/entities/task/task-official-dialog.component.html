@@ -1,0 +1,220 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+        <div class="modal-header">
+            <button type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-hidden="true"
+                    (click)="clear()">&times;
+            </button>
+            <h4 class="modal-title" id="myTaskLabel">Create Task</h4>
+        </div>
+
+        <div class="modal-body" *ngIf="hasPermissionToAdd">
+            <jhi-alert-error></jhi-alert-error>
+            <div class="form-group" [hidden]="!task.id">
+                <label for="id">ID</label>
+                <input type="text" class="form-control" id="id" name="id"
+                       [(ngModel)]="task.id" readonly/>
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label" for="field_title">Title</label>
+                <input type="text"
+                       class="form-control"
+                       name="title"
+                       id="field_title"
+                       [(ngModel)]="task.title"
+                       required/>
+                <div [hidden]="!(editForm.controls.title?.dirty && editForm.controls.title?.invalid)">
+                    <small class="form-text text-danger"
+                           [hidden]="!editForm.controls.title?.errors?.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label" for="field_type">Type</label>
+                <select class="form-control"
+                        name="type"
+                        [(ngModel)]="task.type"
+                        id="field_type"
+                        required>
+
+                    <option value="TTASK">Technical task</option>
+                    <option value="BUG">Bug</option>
+                    <option value="NABUG">Not a bug</option>
+                    <option value="STORY">Story</option>
+                    <option value="EPIC">Epic</option>
+                    <option value="DOCUTASK">Documentation</option>
+                    <option value="ADMINTASK">Administration task</option>
+                    <option value="ADHOC">Ad hoc</option>
+                </select>
+
+                <div [hidden]="!(editForm.controls.type?.dirty && editForm.controls.type?.invalid)">
+                    <small class="form-text text-danger" [hidden]="!editForm.controls.type?.errors?.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label" for="field_priority">Priority</label>
+                <select class="form-control"
+                        name="priority"
+                        [(ngModel)]="task.priority"
+                        id="field_priority"
+                        required>
+
+                    <option value="MAJOR">Major</option>
+                    <option value="MINOR">Minor</option>
+                    <option value="BLOCKER">Blocker</option>
+                    <option value="TRIVIAL">Trivial</option>
+                </select>
+
+                <div [hidden]="!(editForm.controls.priority?.dirty && editForm.controls.priority?.invalid)">
+                    <small class="form-text text-danger" [hidden]="!editForm.controls.priority?.errors?.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label" for="field_estimateTime">Estimate Time</label>
+                <input type="text"
+                       class="form-control"
+                       name="estimateTime"
+                       id="field_estimateTime"
+                       [(ngModel)]="task.estimateTime"
+                       required/>
+                <div [hidden]="!(editForm.controls.estimateTime?.dirty && editForm.controls.estimateTime?.invalid)">
+                    <small class="form-text text-danger" [hidden]="!editForm.controls.estimateTime?.errors?.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="jGroupRequired">
+                <label for="field_jGroup">JGroup</label>
+                <select class="form-control"
+                        id="field_jGroup"
+                        name="jGroup"
+                        [(ngModel)]="task.jgroup"
+                        required>
+
+                    <option [ngValue]="null"></option>
+                    <option [ngValue]="jGroupOption.id === task.jgroup?.id ? task.jgroup : jGroupOption"
+                            *ngFor="let jGroupOption of jgroups; trackBy: trackJGroupById">
+                        {{jGroupOption.id}}: {{jGroupOption.name}}
+                    </option>
+                </select>
+                <div [hidden]="!(editForm.controls.jgroup?.dirty && editForm.controls.jgroup?.invalid)">
+                    <small class="form-text text-danger" [hidden]="!editForm.controls.jgroup?.errors?.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="projectRequired">
+                <label for="field_project">Project <b>(all associated with groups, choose correct one)</b></label>
+                <select class="form-control"
+                        id="field_project"
+                        name="jGroup"
+                        [(ngModel)]="task.project"
+                        required>
+
+                    <option [ngValue]="null"></option>
+                    <option [ngValue]="projectOption.id === task.project?.id ? task.project : projectOption"
+                            *ngFor="let projectOption of projects; trackBy: trackProjectById">
+                            {{projectOption?.id}}: {{projectOption?.name}}
+                    </option>
+                </select>
+                <div [hidden]="!(editForm.controls.project?.dirty && editForm.controls.project?.invalid)">
+                    <small class="form-text text-danger" [hidden]="!editForm.controls.project?.errors?.required">
+                        This field is required.
+                    </small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label" for="field_descr">Task description</label>
+                <textarea class="form-control" name="description" id="field_descr"
+                          [(ngModel)]="taskDescription.content"></textarea>
+            </div>
+
+
+            <div class="form-group">
+                <label class="form-control-label" for="field_version">Version</label>
+                <input type="text"
+                       class="form-control"
+                       name="version"
+                       id="field_version"
+                       [(ngModel)]="task.version"
+                />
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label" for="field_lifeCycle">Status</label>
+                <select class="form-control"
+                        name="lifeCycle"
+                        [(ngModel)]="task.lifeCycle"
+                        id="field_lifeCycle">
+
+                    <option value="TODO">To do</option>
+                    <option value="INPROGRESS">In progress</option>
+                    <option value="TEST">Test</option>
+                    <option value="REVIEWED">Reviewed</option>
+                    <option value="DONE">Done</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-control-label" for="field_remainingTime">Remaining Time</label>
+                <input type="text"
+                       class="form-control"
+                       name="remainingTime"
+                       id="field_remainingTime"
+                       [(ngModel)]="task.remainingTime"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="field_sprint">Sprint</label>
+                <select class="form-control"
+                        id="field_sprint"
+                        name="sprint"
+                        [(ngModel)]="task.sprint">
+
+                    <option [ngValue]="null"></option>
+                    <option [ngValue]="sprintOption.id === task.sprint?.id ? task.sprint : sprintOption"
+                            *ngFor="let sprintOption of sprints; trackBy: trackSprintById">{{sprintOption.id}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="hasNotPermissionToAdd">
+            <span style="color: red; margin-left: 20px">Since You don't belong to any group You cannot add a new task. Try create new project and group or join to existing ones.</span>
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-default"
+                        data-dismiss="modal"
+                        (click)="clear()">
+                    <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+                </button>
+            </div>
+
+        </div>
+        <div class="modal-footer" *ngIf="hasPermissionToAdd">
+            <button type="button"
+                    class="btn btn-default"
+                    data-dismiss="modal"
+                    (click)="clear()">
+                <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+            </button>
+            <button type="submit"
+                    [disabled]="editForm.form.invalid || isSaving"
+                    class="btn btn-primary">
+                <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+            </button>
+        </div>
+</form>

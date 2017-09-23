@@ -1,0 +1,48 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "projectDocumentation",
+            "otherEntityName": "projectDocumentation",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "lastAuthor",
+            "otherEntityName": "jUser",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "lastAuthor"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "createdDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "content",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "version",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "modifyDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "lifeCycle",
+            "fieldType": "LifeCycle",
+            "fieldValues": "ACTIVE,INACTIVE,DEPRECATED,TERMINATED"
+        }
+    ],
+    "changelogDate": "20170311112049",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "documentation_history",
+    "pagination": "no"
+}

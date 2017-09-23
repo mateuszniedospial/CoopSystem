@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity JGroup.
+    -->
+    <changeSet id="20170311112049-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="jgroups_id"
+                                 baseTableName="jgroup_juser"
+                                 constraintName="fk_jgroup_juser_jgroups_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_group"/>
+        <addForeignKeyConstraint baseColumnNames="jusers_id"
+                                 baseTableName="jgroup_juser"
+                                 constraintName="fk_jgroup_juser_jusers_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_user"/>
+        
+    </changeSet>
+</databaseChangeLog>

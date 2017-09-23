@@ -1,0 +1,25 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "juser",
+            "otherEntityName": "jUser",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "jUserImg"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "content",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        }
+    ],
+    "changelogDate": "20170311112049",
+    "entityTableName": "j_user_img",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

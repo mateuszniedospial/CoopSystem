@@ -1,0 +1,36 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "sprint",
+            "otherEntityName": "sprint",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "sprintJUserPrivilege"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "createdDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "modifyDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "SprintPrivilegeType",
+            "fieldValues": "SCRUM_MASTER,PRODUCT_OWNER,DEVELOPER",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170311112049",
+    "entityTableName": "sprint_j_user_privilege",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

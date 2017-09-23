@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="col-md-12" [ngSwitch]="isAuthenticated()">
+        <!-- Not-logged in part -->
+
+        <div class="row" *ngSwitchCase="false">
+            <div class="col-md-4">
+                <div class="jumbotron">
+                    <span class="tools img-fluid img-rounded"></span>
+                    <h1>MyJIR is a tool created specifically for managing project development using agile
+                        methodologies.</h1>
+                    <p>It is perfect for students, small companies and is completely free of charge. <br>
+                        The only thing you need to do is create an account and start developing.</p>
+                    <p><a class="btn btn-primary btn-lg" href="#" role="button">LEARN MORE</a></p>
+                </div>
+            </div>
+            <div class="col-md-4 col-md-offset-1">
+                <div class="jumbotron">
+                    <span class="links img-fluid img-rounded"></span>
+                    <h1>It offers connection with GitLab, GoogleDocs and many others respected services.</h1>
+                    <p>Thanks to them You can easily track code changes, prepare documentation <br>
+                        and analyse every step that is taken during developing phase of the project.</p>
+                    <p><a class="btn btn-success btn-lg" href="#" role="button">CONNECTIONS</a></p>
+                </div>
+            </div>
+            <div class="col-md-4 col-md-offset-1">
+                <div class="jumbotron">
+                    <span class="users img-fluid img-rounded"></span>
+                    <h1>Check out recent created projects and its contributors as a prove that MyJIR is actually
+                        working.</h1>
+                    <p>We already have over two hundreds registered users and almost<br>
+                        fifty programming projects that are currently under construction.</p>
+                    <p><a class="btn btn-danger btn-lg" href="#" role="button">PROJECTS</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngSwitchCase="false">
+            <div class="col-lg-6 col-md-6">
+                <div class="alert alert-warning">
+                    <h1>You don't have an account yet? <br/> Don't wait and register right now!</h1>
+                    <div class="sign-up">
+                        <a class="alert-link" routerLink="register">
+                            <div class="sign-up btn btn-warning btn-lg">SIGN UP</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="alert alert-info">
+                    <h2><span>If you want to </span>
+                        <b>sign in</b>, you can try the default accounts:</h2><br/><span>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").</span>
+                    <div class="sign-up">
+                        <a class="alert-link" (click)="login()">
+                            <div class="sign-up btn btn-info btn-lg">SIGN IN</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngSwitchCase="true">
+            <div class="col-md-6 signal"></div>
+        </div>
+
+        <!--End of not-logged in part -->
+
+    </div>
+</div>

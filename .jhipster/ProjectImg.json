@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "project",
+            "otherEntityName": "project",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "projectImg"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "content",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170311112049",
+    "entityTableName": "project_img",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

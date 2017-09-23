@@ -1,0 +1,94 @@
+
+
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+        <h4 class="modal-title" id="myProjectDocumentationLabel">Create document</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!projectDocumentation.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="projectDocumentation.id" readonly />
+        </div>
+        <!--<div class="form-group">-->
+            <!--<label class="form-control-label" for="field_createdDate">Created Date</label>-->
+            <!--<div class="input-group">-->
+                <!--<input id="field_createdDate" type="datetime-local" class="form-control" name="createdDate" [(ngModel)]="projectDocumentation.createdDate"-->
+                  <!--/>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="form-control-label" for="field_modifyDate">Modify Date</label>-->
+            <!--<div class="input-group">-->
+                <!--<input id="field_modifyDate" type="datetime-local" class="form-control" name="modifyDate" [(ngModel)]="projectDocumentation.modifyDate"-->
+                  <!--/>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="form-control-label" for="field_label">Name <b>(Note: name of the document must be unique)</b></label>
+            <input type="text" class="form-control" name="label" id="field_label"
+                   [(ngModel)]="projectDocumentation.label"
+            />
+        </div>
+        <!--<div class="form-group">-->
+            <!--<label class="form-control-label" for="field_version">Version</label>-->
+            <!--<input type="number" class="form-control" name="version" id="field_version"-->
+                <!--[(ngModel)]="projectDocumentation.version"-->
+             <!--/>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="form-control-label" for="field_content">Content</label>-->
+            <!--<textarea class="form-control" name="content" id="field_content"-->
+                <!--[(ngModel)]="projectDocumentation.content"  ></textarea>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="form-control-label" for="field_lifeCycle">Life Cycle</label>
+            <select class="form-control" name="lifeCycle" [(ngModel)]="projectDocumentation.lifeCycle" id="field_lifeCycle" >
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="INACTIVE">INACTIVE</option>
+                <option value="DEPRECATED">DEPRECATED</option>
+                <option value="TERMINATED">TERMINATED</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_data">Short description</label>
+            <input type="text" class="form-control" name="data" id="field_data"
+                [(ngModel)]="projectDocumentation.data"
+             />
+        </div>
+
+        <!--<div class="form-group">-->
+            <!--<label for="field_lastAuthor">Last Author</label>-->
+            <!--<select class="form-control" id="field_lastAuthor" name="lastAuthor" [(ngModel)]="projectDocumentation.lastAuthor">-->
+                <!--<option [ngValue]="null"></option>-->
+                <!--<option [ngValue]="jUserOption.id === projectDocumentation.lastAuthor?.id ? projectDocumentation.lastAuthor : jUserOption" *ngFor="let jUserOption of lastauthors; trackBy: trackJUserById">{{jUserOption.id}}</option>-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label for="field_project">Project</label>-->
+            <!--<select class="form-control" id="field_project" name="project" [(ngModel)]="projectDocumentation.project" >-->
+                <!--<option [ngValue]="null"></option>-->
+                <!--<option [ngValue]="projectOption.id === projectDocumentation.project?.id ? projectDocumentation.project : projectOption" *ngFor="let projectOption of projects; trackBy: trackProjectById">{{projectOption.id}}</option>-->
+            <!--</select>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label for="field_underCatalogue">Under folder</label>
+            <select class="form-control" id="field_underCatalogue" name="underCatalogue" [(ngModel)]="projectDocumentation.underCatalogue" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="documentationCatalogueOption.id === projectDocumentation.underCatalogue?.id ? projectDocumentation.underCatalogue : documentationCatalogueOption" *ngFor="let documentationCatalogueOption of documentationcatalogues; trackBy: trackDocumentationCatalogueById">{{documentationCatalogueOption.label}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

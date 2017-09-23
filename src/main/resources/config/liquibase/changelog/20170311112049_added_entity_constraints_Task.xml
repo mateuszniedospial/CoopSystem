@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity Task.
+    -->
+    <changeSet id="20170311112049-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="sprint_id"
+                                 baseTableName="task"
+                                 constraintName="fk_task_sprint_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sprint"/>
+
+        <addForeignKeyConstraint baseColumnNames="parent_id"
+                                 baseTableName="task"
+                                 constraintName="fk_task_parent_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="task"/>
+
+        <addForeignKeyConstraint baseColumnNames="j_group_id"
+                                 baseTableName="task"
+                                 constraintName="fk_task_j_group_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_group"/>
+
+        <addForeignKeyConstraint baseColumnNames="assignee_id"
+                                 baseTableName="task"
+                                 constraintName="fk_task_assignee_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="reporter_id"
+                                 baseTableName="task"
+                                 constraintName="fk_task_reporter_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="task_id"
+                                 baseTableName="task"
+                                 constraintName="fk_task_task_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="task"/>
+
+        <addForeignKeyConstraint baseColumnNames="juser_id"
+                                 baseTableName="task"
+                                 constraintName="fk_task_juser_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="tasks_id"
+                                 baseTableName="task_watchers"
+                                 constraintName="fk_task_watchers_tasks_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="task"/>
+        <addForeignKeyConstraint baseColumnNames="watchers_id"
+                                 baseTableName="task_watchers"
+                                 constraintName="fk_task_watchers_watchers_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="j_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="tasks_id"
+                                 baseTableName="task_historic_sprints"
+                                 constraintName="fk_task_historic_sprints_tasks_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="task"/>
+        <addForeignKeyConstraint baseColumnNames="historic_sprints_id"
+                                 baseTableName="task_historic_sprints"
+                                 constraintName="fk_task_historic_sprints_historic_sprints_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="sprint"/>
+
+    </changeSet>
+</databaseChangeLog>

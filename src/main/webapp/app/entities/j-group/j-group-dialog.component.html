@@ -1,0 +1,83 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+        <h4 class="modal-title" id="myJGroupLabel">Create group</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!jGroup.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="jGroup.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="jGroup.name"
+            required />
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_description">Description</label>
+            <textarea class="form-control" name="description" id="field_description"
+                      [(ngModel)]="jGroup.description" required></textarea>
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.name?.errors?.required">
+                    This field is required.
+                </small>
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+            <!--<label class="form-control-label" for="field_createdDate">Created Date</label>-->
+            <!--<div class="input-group">-->
+                <!--<input id="field_createdDate" type="datetime-local" class="form-control" name="createdDate" [(ngModel)]="jGroup.createdDate"-->
+                  <!--/>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="form-control-label" for="field_modifyDate">Modify Date</label>-->
+            <!--<div class="input-group">-->
+                <!--<input id="field_modifyDate" type="datetime-local" class="form-control" name="modifyDate" [(ngModel)]="jGroup.modifyDate"-->
+                  <!--/>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="form-control-label" for="field_lifeCycle">Lifecycle</label>
+            <select class="form-control" name="lifeCycle" [(ngModel)]="jGroup.lifeCycle" id="field_lifeCycle"  required>
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="INACTIVE">INACTIVE</option>
+                <option value="DEPRECATED">DEPRECATED</option>
+                <option value="TERMINATED">TERMINATED</option>
+            </select>
+            <div [hidden]="!(editForm.controls.lifeCycle?.dirty && editForm.controls.lifeCycle?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.lifeCycle?.errors?.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="field_juser">Add users</label>
+            <select class="form-control" id="field_juser" multiple name="juser" [(ngModel)]="jGroup.jusers">
+                <option [ngValue]="getSelected(jGroup.jusers, jUserOption)" *ngFor="let jUserOption of jusers; trackBy: trackJUserById">[ Login: {{jUserOption?.user?.login}} ] - {{jUserOption?.user?.firstName}} {{jUserOption?.user?.lastName}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

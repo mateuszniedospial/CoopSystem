@@ -1,0 +1,706 @@
+<div *ngIf="task">
+    <div class="card">
+
+        <p-growl [value]="msgs" sticky="sticky"></p-growl>
+        <!--header of Card-->
+        <div class="card-header" style="margin-top: -20px">
+            <h3>
+                <span><b><span [innerHTML]="taskIconStaticRef.getTypeIcon(task?.type)"></span> {{task.id}}:</b>
+                </span>
+                <ndv-edit [title]="'taskTitle'"
+                          [permission]="checkPermissions(perm)"
+                          [placeholder]="task.title"
+                          (onSave)="saveMethod($event)">
+                </ndv-edit>
+            </h3>
+            <div class="parent-wrapper"
+                 *ngIf="hasParent">Parent:
+                <span [routerLink]="['../', task.parent?.id ]" style="cursor: pointer; cursor: hand;">
+                {{task.parent?.id}}: {{task.parent?.title}}
+                </span>
+            </div>
+        </div>
+        <!--end of heaer-->
+
+        <!--card block start-->
+        <div class="card-block">
+            <div class="container-fluid">
+                <!--buttons section-->
+                <div class="btn-group" style="margin-bottom: 10px; margin-left: 50px" role="group" aria-label="Button group">
+                    <button type="button"
+                            (click)="changeStatus('INPROGRESS')"
+                            class="btn btn-outline-info btn-sm"
+                            [ngClass]="{'status-active-inprogress':isStatus('INPROGRESS')}">
+                            In Progress
+                    </button>
+                    <button type="button"
+                            (click)="changeStatus('DEVDONE')"
+                            class="btn btn-outline-info btn-sm"
+                            [ngClass]="{'status-active-inprogress':isStatus('DEVDONE')}">
+                        Dev Done
+                    </button>
+                    <button type="button"
+                            (click)="changeStatus('REVIEWED')"
+                            class="btn btn-outline-info btn-sm"
+                            [ngClass]="{'status-active-inprogress':isStatus('REVIEWED')}">
+                        Reviewed
+                    </button>
+                    <button type="button"
+                            (click)="changeStatus('TEST')"
+                            class="btn btn-outline-info btn-sm"
+                            [ngClass]="{'status-active-inprogress':isStatus('TEST')}">
+                            In Test
+                    </button>
+                    <button type="button"
+                            (click)="changeStatus('DONE')"
+                            class="btn btn-outline-success btn-sm"
+                            [ngClass]="{'status-active-done':isStatus('DONE')}">
+                            Done
+                    </button>
+                    <button type="button"
+                            (click)="changeStatus('TODO')"
+                            class="btn btn-outline-warning btn-sm">
+                            Reopen
+                    </button>
+                </div>
+                <button style="margin-bottom: 10px; margin-right: 50px" type="button"
+                        (click)="changeStatus('CLOSED')"
+                        class="btn btn-outline-danger btn-sm"
+                        [ngClass]="{'status-active-closed':isStatus('CLOSED')}">
+                        Closed
+                </button>
+                <button style="margin-bottom: 10px"
+                        [routerLink]="['/', { outlets: { popup: ['work-log-official-new', {taskID:task?.id, authorid:activJUser?.id}] } }]"
+                        type="button"
+                        class="btn btn-primary btn-sm">
+                        Log Work
+                </button>
+                <!--end of buttons section-->
+
+                <div class="row clear-margin">
+                    <div class="col-md-8 clear-margin">
+                        <div class="container" style="padding:0">
+                            <div class="row clear-margin">
+                                <p-accordion>
+                                    <!--basic information about task Tab-->
+                                    <p-accordionTab [selected]="true">
+                                        <p-header><span style="">Important Information</span></p-header>
+                                       <div class="container">
+                                        <div class="col-md-6">
+                                            <table style="width:100%">
+                                                <tr>
+                                                    <td><span><b>Type:</b> </span></td>
+
+                                                    <td>
+                                                        <!--taskType-->
+                                                        <div [ngSwitch]="checkPermissions()">
+                                                            <div *ngSwitchCase="true">
+                                                                <ndv-select [title]="'taskType'"
+                                                                            [permission]="true"
+                                                                            [items]="taskTypeItem"
+                                                                            [placeholder]="taskStaticRef.translateTaskTypeToString(task.type)"
+                                                                            (onSave)="saveMethod($event)">
+                                                                </ndv-select>
+                                                            </div>
+                                                            <div *ngSwitchCase="false">
+                                                                <span [innerHTML]="taskStaticRef.translateTaskTypeToString(task.type)"></span>
+                                                            </div>
+                                                        </div>
+                                                        <!--end Of task Type-->
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><span><b>Priority:</b> </span></td>
+                                                    <td>
+                                                        <!--task priority-->
+                                                        <div [ngSwitch]="checkPermissions()">
+                                                            <div *ngSwitchCase="true">
+                                                                <ndv-select [title]="'priority'"
+                                                                            [permission]="true"
+                                                                            [items]="taskPriorityItem"
+                                                                            [placeholder]="taskStaticRef.translateTaskPriorityToString(task.priority)"
+                                                                            (onSave)="saveMethod($event)">
+                                                                </ndv-select>
+                                                            </div>
+                                                            <div *ngSwitchCase="false">
+                                                                <span [innerHTML]="taskStaticRef.translateTaskPriorityToString(task.priority)"></span>
+                                                            </div>
+                                                        </div>
+                                                        <!--end of task priority-->
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <!--Estimate time-->
+                                                    <td><span><b>Estimate Time:</b> </span></td>
+                                                    <td>
+                                                        <ndv-edit [title]="'estimateTime'"
+                                                                  [permission]="checkPermissions(perm)"
+                                                                  [error]="'Cannot put empty value.'"
+                                                                  [min]="1" [max]="100"
+                                                                  [placeholder]="task.estimateTime"
+                                                                  (onSave)="saveMethod($event)">
+                                                        </ndv-edit>
+                                                    </td>
+                                                    <!--end fo estimate time-->
+                                                </tr>
+
+                                                <tr>
+                                                    <!--remaining time-->
+                                                    <td><span><b>Remaining Time:</b> </span></td>
+                                                    <td>
+                                                        <ndv-edit [title]="'remainingTime'"
+                                                                  [permission]="checkPermissions(perm)"
+                                                                  [placeholder]="task.remainingTime"
+                                                                  (onSave)="saveMethod($event)">
+                                                        </ndv-edit>
+                                                    </td>
+                                                    <!--end of remaining time-->
+                                                </tr>
+
+                                                <tr>
+                                                    <!--Sprint-->
+                                                    <td><span><b>Sprint:</b> </span></td>
+                                                    <td><span>
+                                                        <div *ngIf="task.sprint">
+                                                        <a [routerLink]="['/agile/sprint-profile', task.sprint?.id]">{{task.sprint.title}}</a>
+                                                        </div>
+                                                    </span>
+                                                    </td>
+                                                </tr>
+                                                <!--end of Sprint-->
+                                            </table>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <table class="kafelek" style="width:100%">
+                                                <!--Version-->
+                                                <tr>
+                                                    <td><span><b>Version:</b> </span></td>
+                                                    <td>
+                                                        <ndv-edit [title]="'version'"
+                                                                  [permission]="checkPermissions(perm)"
+                                                                  [error]=""
+                                                                  [min]="1"
+                                                                  [max]="100"
+                                                                  [placeholder]="task.version"
+                                                                  (onSave)="saveMethod($event)">
+                                                        </ndv-edit>
+                                                    </td>
+                                                <!--end of version-->
+                                                </tr>
+
+                                                <tr>
+                                                    <!--Enviroment-->
+                                                    <td><span><b>Enviroment:</b> </span></td>
+                                                    <td>
+                                                        <ndv-edit [title]="'enviroment'"
+                                                                  [permission]="checkPermissions(perm)"
+                                                                  [error]="'Minimum length o f this field is equal 1 char.'"
+                                                                  [min]="1"
+                                                                  [max]="100"
+                                                                  [placeholder]="task.enviroment"
+                                                                  (onSave)="saveMethod($event)">
+                                                        </ndv-edit>
+                                                    </td>
+                                                    <!--end of Enviroment-->
+                                                </tr>
+
+                                                <tr>
+                                                    <!--Status-->
+                                                    <td><span><b>Status:</b> </span></td>
+                                                    <td>
+                                                        <div [ngSwitch]="checkPermissions()">
+                                                            <div *ngSwitchCase="true">
+                                                                <ndv-select [title]="'status'"
+                                                                            [permission]="true"
+                                                                            [items]="taskStatusItem"
+                                                                            [placeholder]="taskStaticRef.translateTaskLifeCycleToString(task.lifeCycle)"
+                                                                            (onSave)="saveMethod($event)">
+                                                                </ndv-select>
+                                                            </div>
+                                                            <div *ngSwitchCase="false">
+                                                                <span [innerHTML]="taskStaticRef.translateTaskLifeCycleToString(task.lifeCycle)"></span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <!--end of Status-->
+                                                </tr>
+                                                <tr>
+                                                    <!--Project-->
+                                                    <td><span><b>Project:</b> </span></td>
+                                                    <td><span>
+                                                        <ng-container *ngIf="task?.project">
+                                                            <a [routerLink]="['/project', task.project?.id]">{{task?.project?.name}}</a>
+                                                        </ng-container>
+                                                    </span></td>
+                                                    <!--end of project-->
+                                                </tr>
+                                                <tr>
+                                                    <!--group-->
+                                                    <td><span><b>Group:</b> </span></td>
+                                                    <td>
+                                                        <span>
+                                                        <div *ngIf="task.jgroup">
+                                                            <a [routerLink]="['/j-group', task.jgroup?.id]">{{task.jgroup?.name}}</a>
+                                                        </div>
+                                                    </span>
+                                                    </td>
+                                                    <!--end of group-->
+                                                </tr>
+                                            </table>
+                                        </div>
+                                           <!--end of basic information about task Tab-->
+                                       </div>
+                                    </p-accordionTab>
+                                </p-accordion>
+
+                            </div>
+                            <div class="row clear-margin">
+                                <p-accordion>
+                                    <!--attachment tab-->
+                                    <p-accordionTab [selected]="false">
+                                        <p-header>
+                                            <span style="">Attachment</span>
+                                            <button style="float:right; margin-top:-5px;"
+                                                    type="input"
+                                                    (click)="uploadAttachment()"
+                                                    class="btn btn-outline-primary btn-sm custom-button-outline">Add
+                                            </button>
+                                        </p-header>
+                                        <div style='height: 0px;width:0px; overflow:hidden;'>
+                                            <input id="upfile"
+                                                   (change)="sendFile($event)"
+                                                   type="file"
+                                                   value="upload"/>
+                                        </div>
+                                        <!--attachment table-->
+                                        <div *ngIf="hasAttachments">
+                                            <table class="table table-sm table-striped table-bordered table-hover ">
+                                                <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Created Date</th>
+                                                    <th>Author</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                <tr *ngFor="let attachment of attachmentsWihoutContent">
+                                                    <td><span style="font-size: 12px">{{attachment.name}}</span></td>
+                                                    <td>
+                                                        <span style="font-size: 12px" [innerHTML]="dateUtilStaticRef.formatDate(attachment.createdDate)"></span>
+                                                    </td>
+                                                    <td><a [routerLink]="['/j-user', attachment.author?.id]">
+                                                        <span style="font-size: 12px">
+                                                            {{attachment.author?.user?.firstName}}
+                                                            {{attachment.author?.user?.lastName}}
+                                                            [{{attachment.author?.user?.login}}]</span>
+                                                    </a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="api/attachmentFile/{{attachment?.id}}">
+                                                            <i class="fa fa-download" aria-hidden="true"></i></a>
+                                                        <a><span style="color:red">
+                                                            <i (click)="deleteFile(attachment)"
+                                                               class="fa fa-trash"
+                                                               aria-hidden="true"></i></span></a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                                <!--end of table attachment-->
+                                            </table>
+                                        </div>
+                                        <!--end of Tab attachment-->
+                                    </p-accordionTab>
+                                </p-accordion>
+                            </div>
+                            <div class="row clear-margin">
+                                <p-accordion>
+                                    <!--subtask tab-->
+                                    <p-accordionTab [selected]="false">
+                                        <p-header><span style="">Subtask</span>
+                                            <button style="float:right; margin-top:-5px;"
+                                                    type="button"
+                                                    (click)="clickAddSubtask()"
+                                                    [routerLink]="['/', { outlets: { popup: ['task-official-new', {jGroupId:task.jgroup.id, parentId:task.id}] } }]"
+                                                    class="btn btn-outline-primary btn-sm custom-button-outline"> Add
+                                            </button>
+                                        </p-header>
+                                        <div *ngIf="hasSubtask">
+                                            <!--table of subtask-->
+                                            <table class="table table-sm table-striped table-bordered table-hover ">
+                                                <thead>
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th>Title</th>
+                                                    <th>Assignee</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody style="cursor: pointer; cursor: hand;">
+                                                    <tr *ngFor="let subtask of subtasks" [routerLink]="['../', subtask.id ]">
+                                                        <td><span style="font-size: 12px">{{subtask.id}}</span></td>
+                                                        <td><span style="font-size: 12px">{{subtask.title}}</span></td>
+                                                        <td><span style="font-size: 12px" [innerHTML]="subtask.assignee?.user?.login"></span></td>
+                                                        <td><span style="font-size: 12px" [innerHTML]="taskStaticRef.translateTaskLifeCycleToString(subtask.lifeCycle)"></span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <!--end of table subtask-->
+                                        </div>
+                                        <!--end of tab subtask-->
+                                    </p-accordionTab>
+                                </p-accordion>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="container">
+                            <div class="row clear-margin">
+                                <p-accordion>
+                                    <!--People tab-->
+                                    <p-accordionTab [selected]="true">
+                                        <p-header><span><span style="">People</span></span>
+                                            <button style="float:right; margin-top:-5px;"
+                                                    type="button"
+                                                    (click)="clickAssingne()"
+                                                    class="btn btn-outline-primary btn-sm custom-button-outline">Assign to me
+                                            </button>
+                                        </p-header>
+
+                                        <table class="kafelek" style="width:100%">
+                                            <tr>
+                                                <!--assignee section-->
+                                                <td><span><b>Assignee:</b> </span></td>
+                                                <td>
+                                                    <div *ngIf="task.assignee">
+                                                        <ndv-search [title]="'assigne'"
+                                                                    [permission]="checkPermissions()"
+                                                                    [error]="''"
+                                                                    [placeholder]="task.assignee?.user?.login"
+                                                                    [suggestions]="assigneSuggestions"
+                                                                    (onSug)="searchAssigne($event)"
+                                                                    (onSave)="saveMethod($event)">
+                                                        </ndv-search>
+                                                    </div>
+                                                </td>
+                                                <!--end of assignee section-->
+                                            </tr>
+                                            <tr>
+                                                <!--reporter section-->
+                                                <td><span><b>Reporter:</b> </span></td>
+                                                <td>
+                                                    <div *ngIf="task.reporter" style="margin-top: 8px;margin-bottom: 8px">
+                                                        <a [routerLink]="['/j-user', task.reporter?.id]">
+                                                            <span [innerHTML]="task.reporter.user?.login "></span>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <!--end of reporter section-->
+                                            </tr>
+                                            <tr>
+                                                <!--watchers section-->
+                                                <td><span><b>Watchers:</b> </span></td>
+                                                <ndv-search [title]="'watchers'"
+                                                            [permission]="checkPermissions()"
+                                                            [error]="''"
+                                                            [placeholder]="watchersUserNames"
+                                                            [suggestions]="watchersSuggestions"
+                                                            (onSug)="searchWatchers($event)"
+                                                            [multi]="true"
+                                                            (onSave)="saveMethod($event)" ngDefaultControl>
+                                                </ndv-search>
+                                            </tr>
+                                            <!--end of watchers section-->
+                                        </table>
+                                        <br>
+                                        <!--end of people tab-->
+                                    </p-accordionTab>
+                                </p-accordion>
+                            </div>
+
+                            <div class="row clear-margin">
+                                <p-accordion>
+                                    <!--dates tab-->
+                                    <p-accordionTab>
+                                        <p-header><span style="">Dates</span></p-header>
+                                        <table class="kafelek" style="width:100%">
+                                            <tr>
+                                                <td><span><b>Create date:</b> </span></td>
+                                                <td><span style="font-size: 13px" [innerHTML]="dateUtilStaticRef.formatDate(task.createdDate)"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span><b>Last modified date:</b> </span></td>
+                                                <td><span style="font-size: 13px" [innerHTML]="dateUtilStaticRef.formatDate(task.modifyDate)"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span><b>Last commit date:</b> </span></td>
+                                                <td> <span style="font-size: 13px" [innerHTML]="dateUtilStaticRef.formatDate(lastCommitDate)"></span></td>
+                                            </tr>
+                                        </table>
+                                    </p-accordionTab>
+                                <!--end of dates tab-->
+                                </p-accordion>
+                            </div>
+
+                            <div class="row clear-margin">
+                                <p-accordion>
+                                    <!--dates tab-->
+                                    <p-accordionTab>
+                                        <p-header><span style="">Sprint Tool</span></p-header>
+                                        <table class="kafelek" style="width:100%">
+                                            <tr>
+                                                <td>Poker Tool:</td>
+                                                <td>
+                                                    <button type="submit"
+                                                            style="float: right; margin-left: 3px"
+                                                            class="btn btn-outline-primary btn-sm"
+                                                            [routerLink]="['/', { outlets: { popup: ['poker-official-new', {taskId: task?.id, jGroupId: jGroupWithUsers?.id}] } }]">
+                                                        <span class="hidden-md-down">Run</span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </p-accordionTab>
+                                    <!--end of dates tab-->
+                                </p-accordion>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <br>
+                            <p-accordion>
+                                <p-accordionTab>
+                                    <!--description tab-->
+                                    <p-header style="margin-bottom: -20px"><span style="">Description</span></p-header>
+                                    <ndv-area [title]="'description'"
+                                              [permission]="checkPermissions()"
+                                              [placeholder]="description.content"
+                                              (onSave)="saveMethod($event)">
+                                    </ndv-area>
+                                </p-accordionTab>
+                                <!--end of description tab-->
+                            </p-accordion>
+                        </div>
+                    </div>
+                </div>
+
+            <br>
+            <div class="col-md-12">
+                <hr>
+                <br>
+            </div>
+            </div>
+            <!--tabview start-->
+
+            <p-tabView>
+                <!--tabPanel Comments-->
+                <p-tabPanel header="Comments">
+                    <div *ngFor="let comment of commentsList;" class="media comment-wrapper box-shadow">
+                        <div class="media-left user-logo">
+                            <img *ngIf="getAvatarById(comment.author.id)"
+                                 class="user-logo-img"
+                                 [src]="'data:' + getAvatarById(comment.author.id)?.contentContentType + ';base64,' + getAvatarById(comment.author.id)?.content"/>
+
+                            <img *ngIf="getAvatarById(comment.author.id) == null"
+                                 class="user-logo-img"
+                                 src="unknownUser.jpg" alt="jUser Img" />
+                        </div>
+                        <div class="media-body" style="padding-bottom:10px ">
+                            <div style="border-bottom: #a3a190 1px solid ">
+                                <a [routerLink]="['/j-user', task.assignee?.id]">
+                                     <span class="media-heading"
+                                           style="color: #353eae; margin-top: 5px"
+                                           [innerHTML]="comment.author?.user?.login"></span>
+                                </a>
+                                <span style="float:right; margin-right:10px; font-size: 12px; color: #8b8b8b; "
+                                      [innerHTML]="dateUtilStaticRef.formatDate(comment.createdDate)"></span>
+                            </div>
+                            <ndv-area
+                                [title]="'comment'"
+                                [permission]="checkCommentPermissions(comment)"
+                                [placeholder]="comment.content"
+                                (onSave)="saveComment($event,comment)">
+                            </ndv-area>
+                        </div>
+                    </div>
+
+                    <button
+                        [routerLink]="['/', { outlets: { popup: ['comment-official-new', {taskID:task?.id, authorid:activJUser?.id}] } }]"
+                        type="button"
+                        class="btn btn-primary ">
+                        <i class="fa fa-comment-o" aria-hidden="true"></i> Add Comment
+                    </button>
+                </p-tabPanel>
+                <!--end of tabPanel Comments-->
+
+                <!--start of tabPanel Commits-->
+                <p-tabPanel header="Git Commits">
+                   <div *ngIf="checkPermissions()">
+                    <div *ngFor="let commit of commits" class="row">
+                        <div class="col-md-12">
+                            <div class="col col-md-2">
+                                <div class="row"><b>Author: </b><a [routerLink]="['/j-user', commit.juser?.id]">
+                                    {{commit.juser?.user?.login}}</a></div>
+                                <div class="row"><b>Date: </b><span style="font-size: 13px"
+                                                                    [innerHTML]="dateUtilStaticRef.formatDate(commit.commitDate)"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-10">
+                                <div class="row"><b>Url: </b><a [href]="commit.url">{{commit.url}}</a></div>
+                                <div class="row"><b>Commit message: </b>{{commit.message}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-md-2"></div>
+                                <div class="col col-md-10">
+                                    <div class="row">
+                                        <br>
+                                        <div class="col-md-12" *ngIf="commit.addedList?.length>0"><b>Added:</b>
+                                            <div *ngFor="let addEntry of commit.addedList" class="row">
+                                                <div class="col-md-12">
+                                                    <span style="color:green"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                    <a [href]="commit.url"> <span style="color:green" [innerHTML]="addEntry"></span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" *ngIf="commit.modifiedList?.length>0"><b>Modified:</b></div>
+                                        <div *ngFor="let modifiedEntry of commit.modifiedList" class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    <span style="color:blue"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                                    <a [href]="commit.url"> <span style="color:blue" [innerHTML]="modifiedEntry"></span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" *ngIf="commit.removedList?.length>0"><b>Removed:</b></div>
+                                        <div *ngFor="let removedEntry of commit.removedList" class="row">
+
+                                            <div class="col-md-12">
+                                                <span style="color:red"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                <a [href]="commit.url"> <span style="color:red" [innerHTML]="removedEntry"></span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                        How to integrate with <a href="https://gitlab.com/">Gitlab</a> or <a href="https://github.com/">
+                        Github</a> you can find in <a [routerLink]="['/faq']">FAQ</a>
+
+                   </div>
+                </p-tabPanel>
+                <!--end of tabPanel Commits-->
+
+                <!--start of tabPanel Attachment-->
+                <p-tabPanel header="Attachment">
+                    <div>
+                        <table class="table table-sm table-striped table-bordered ">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Created Date</th>
+                                <th>Author</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let attachment of attachmentsWihoutContent">
+                                <td><span style="font-size: 12px">{{attachment.name}}</span></td>
+                                <td><span style="font-size: 12px" [innerHTML]="dateUtilStaticRef.formatDate(attachment.createdDate)"></span></td>
+                                <td><span style="font-size: 12px">Author</span></td>
+                                <td>
+                                    <a href="api/attachmentFile/{{attachment?.id}}">
+                                        <i class="fa fa-download" aria-hidden="true"></i></a>
+                                    <a href="api/attachmentFile/{{attachment?.id}}">
+                                        <i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </p-tabPanel>
+                <!--end of tabPanel Attachment-->
+
+                <!--start of tabPanel History-->
+                <p-tabPanel header="History">
+                    <div class="container-fluid">
+                        <div class="row" *ngFor="let taskHistory of taskHistories">
+                            <div class="col col-lg-3 col-md-3 bs-callout bs-callout-info box-shadow" style="margin-top: -0px">
+                                <div class="row ">
+                                    <div class="col col-lg-6 col-md-6"><h6>Changed by</h6></div>
+                                    <div class="col col-lg-6 col-md-6">
+                                        <a [routerLink]="['/j-user', taskHistory.modifiedJUser?.id]">
+                                            <span style="color: #353eae;" [innerHTML]="taskHistory.modifiedJUser?.user?.login"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-lg-6 col-md-6"><h6>Date</h6></div>
+                                    <div class="col col-lg-6 col-md-6">
+                                        <span style="font-size: 12px" [innerHTML]="dateUtilStaticRef.formatDate(taskHistory.created_date)"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col col-lg-6 col-md-6"><h6>Changed field</h6></div>
+                                    <div class="col col-lg-6 col-md-6">{{taskHistory.changedName}}</div>
+                                </div>
+                            </div>
+                            <div class="col col-lg-9 col-md-9 history-old-new ">
+                                <div class="col col-lg-6 col-md-5 history-old"><i>Old Value:</i> <br> <s>{{taskHistory.oldContent}}</s>
+                                </div>
+                                <div class="col col-lg-6 col-md-5 history-new"><i>New Value:</i><br> <span
+                                    [innerHTML]="taskHistory.content"></span></div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </p-tabPanel>
+                <!--end of tabPanel history-->
+
+                <!--start of tabPanel WorkLog-->
+                <p-tabPanel header="Work Log">
+                    <div class="container-fluid">
+                        <div class="row work-log-head">
+                            <div class="col col-lg-3 col-md-3">User</div>
+                            <div class="col col-lg-6 col-md-6">Description</div>
+                            <div class="col col-lg-3 col-md-3">Time Spent</div>
+                        </div>
+                        <div *ngFor="let workLog of workLogs" class="row work-log-body">
+                            <div class="col col-lg-3 col-md-3">
+                                <a [routerLink]="['/j-user', workLog.juser?.id]">
+                                    <span class="media-heading"
+                                          style="color: #353eae; margin-top: 5px"
+                                          [innerHTML]="workLog.juser?.user?.login"></span>
+                                </a>
+                            </div>
+                            <div class="col col-lg-6 col-md-6">{{workLog.description}}</div>
+                            <div class="col col-lg-3 col-md-3">{{workLog.timeInHour}}h</div>
+                        </div>
+                        <div class="row">
+                            <div class="col col-lg-9 col-md-9"><b>&#931; Sum</b></div>
+                            <div class="col col-lg-3 col-md-3"><span style="float:left"><strong>{{sumOfWorks}}h</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
+            <!--end of tabPanel WorkLog-->
+
+        </div>
+
+    </div>
+</div>
+

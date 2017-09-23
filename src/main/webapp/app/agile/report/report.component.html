@@ -1,0 +1,290 @@
+<div class="card">
+
+    <div class="card-header"><span style="font-size: 26px;"><i class="fa fa-line-chart" aria-hidden="true"></i> Report</span>
+        <div style="float: right" *ngIf="sprintId == 0">
+            <button type="button"
+                    (click)="previousSprintClick()"
+                    [disabled]="!report?.reportContent?.previousReportId"
+                    class="btn btn-primary  ">
+                Previous report
+            </button>
+
+            <button type="button"
+                    (click)="nextSprintClick()"
+                    [disabled]="!report?.reportContent?.nextReportId"
+                    class="btn btn-primary ">
+                Next report
+            </button>
+        </div>
+    </div>
+    <div class="card-block " *ngIf="report && activeSprintExist">
+        <div class="container-fluid">
+
+            <h5>Basic info about sprint: {{sprint?.id}} : {{sprint?.title}}</h5>
+            <hr>
+            <!--basic information about selected sprint-->
+            <div class="bs-callout bs-callout-info box-shadow" style="margin-top: -0px">
+                <div *ngIf="sprint" class="row " style="margin-top: 8px">
+                    <div class="col-md-2">
+                        <b>Started on:</b>
+                    </div>
+                    <div class="col-md-2">
+                        <b>End on:</b>
+                    </div>
+                    <div class="col-md-1">
+                        <b>LifeCycle:</b>
+                    </div>
+                    <div class="col-md-1">
+                        <b>Name:</b>
+                    </div>
+                    <div class="col-md-2">
+                        <b>&Sigma; Estimated:</b>
+                    </div>
+                    <div class="col-md-2">
+                        <b>&Sigma; Remaining:</b>
+                    </div>
+                    <div class="col-md-2">
+                        <b>Group:</b>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="sprint">
+                    <div class="col-md-2">
+                        <span [innerHTML]="formatDate(sprint.startTime)"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <span [innerHTML]="formatDate(sprint.stopTime)"></span>
+                    </div>
+                    <div class="col-md-1">
+                        {{sprint.lifeCycle}}
+                    </div>
+                    <div class="col-md-1">
+                        {{sprint.title}}
+                    </div>
+                    <div class="col-md-2">
+                        {{sprint.sumOfEstimate}}
+                    </div>
+                    <div class="col-md-2">
+                        {{sprint.sumOfRemaining}}
+                    </div>
+                    <div class="col-md-2" *ngIf="jGroup">
+                        <a [routerLink]="['/j-group', jGroup.id]">{{jGroup.name}}</a>
+                    </div>
+                </div>
+            </div>
+            <!--end of basic information about selected sprint-->
+            <br>
+            <br>
+            <!--body of report-->
+            <div *ngIf="report && jGroup.jusers">
+                <div class="row">
+                    <h4>Remaining functions:</h4>
+                    <hr>
+                    <!--remaining plot-->
+                    <canvas baseChart
+                            width="200" height="50"
+                            [datasets]="lineChartData"
+                            [labels]="lineChartLabels"
+                            [options]="lineChartOptions"
+                            [colors]="lineChartColors"
+                            [legend]="lineChartLegend"
+                            [chartType]="lineChartType"
+                            (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+                <!--<br>-->
+                <br>
+                <br>
+                <!--task done list section-->
+                <div class="row">
+                    <h4>Task done</h4>
+                    <hr>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <table class="table table-sm table-hover ">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Priority</th>
+                                    <th>Estimate</th>
+                                    <th>Work Log[h]</th>
+                                </tr>
+                                </thead>
+                                <tbody class="task-done">
+                                <tr *ngFor="let task of report?.reportContent?.tasksDone">
+                                    <td><a [routerLink]="['/task/view', task.id ]">{{task.id}}</a></td>
+                                    <td>{{task.title}}</td>
+                                    <td><span [innerHTML]="getTypeIcon(task?.type)"></span></td>
+                                    <td>{{task.priority}}</td>
+                                    <td>{{task.estimateTime}}</td>
+                                    <td><span [innerHTML]="getSumOfWorkLog(task)"></span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-9"><b>Summary</b></div>
+                                <div class="col-md-3"><span
+                                    [innerHTML]="getSumOfWorkLogPerList(report?.reportContent?.tasksDone)"></span></div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <!--enf of task done list section-->
+
+                <br>
+                <br>
+
+                <!--task undone list section-->
+                <div class="row">
+                    <h4>Task undone</h4>
+                    <hr>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <table class="table table-sm table-hover">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Priority</th>
+                                    <th>Estimate</th>
+                                    <th>Work Log[h]</th>
+                                </tr>
+                                </thead>
+                                <tbody class="task-undone">
+                                <tr *ngFor="let task of report?.reportContent?.tasksUnDone">
+                                    <td><a [routerLink]="['/task/view', task.id ]">{{task.id}}</a></td>
+                                    <td>{{task.title}}</td>
+                                    <td><span [innerHTML]="getTypeIcon(task?.type)"></span></td>
+                                    <td>{{task.priority}}</td>
+                                    <td>{{task.estimateTime}}</td>
+                                    <td><span [innerHTML]="getSumOfWorkLog(task)"></span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-9"><b>Summary</b></div>
+                                <div class="col-md-3"><span
+                                    [innerHTML]="getSumOfWorkLogPerList(report?.reportContent?.tasksUnDone)"></span>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <!--end of task undone list section-->
+
+                <br>
+                <br>
+
+                <!--task added to sprint during sprint list section-->
+                <div class="row">
+                    <h4>Task added to sprint during the sprint</h4>
+                    <hr>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <table class="table table-sm  table-hover  ">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Priority</th>
+                                    <th>Estimate</th>
+                                    <th>Work Log[h]</th>
+                                </tr>
+                                </thead>
+                                <tbody class="task-added-during-the-sprint">
+                                <tr *ngFor="let task of report?.reportContent?.tasksAddedInSprint">
+                                    <td><a [routerLink]="['/task/view', task.id ]">{{task.id}}</a></td>
+                                    <td>{{task.title}}</td>
+                                    <td><span [innerHTML]="getTypeIcon(task?.type)"></span></td>
+                                    <td>{{task.priority}}</td>
+                                    <td>{{task.estimateTime}}</td>
+                                    <td><span [innerHTML]="getSumOfWorkLog(task)"></span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-9"><b>Summary</b></div>
+                                <div class="col-md-3"><span
+                                    [innerHTML]="getSumOfWorkLogPerList(report?.reportContent?.tasksAddedInSprint)"></span>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <!--end of task added to sprint during sprint list section-->
+
+                <br>
+                <br>
+
+                <!--worklog plot-->
+                <div class="row" *ngIf="report?.reportContent?.workLogPerUser?.length > 0 && jGroup?.jusers?.length>0">
+                    <h4>Work logs</h4>
+                    <hr>
+                    <div>
+                        <div style="display: block">
+                            <canvas baseChart
+                                    width="200" height="80"
+                                    [datasets]="barChartData"
+                                    [labels]="barChartLabels"
+                                    [options]="barChartOptions"
+                                    [legend]="barChartLegend"
+                                    [chartType]="barChartType"
+                                    (chartHover)="chartHovered($event)"
+                                    (chartClick)="chartClicked($event)"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!--end of worklog plot-->
+
+                <br>
+                <br>
+
+                <h4>Summary</h4>
+                <hr>
+                <div class="bs-callout bs-callout-success">
+                    <!--summary section-->
+                    <div class="row">
+                        <div class="col-md-12">
+                            At start of the sprint tasks were estimated at <b>{{sprint?.sumOfEstimate}} MD</b> in
+                            summary
+                            and all
+                            remaining time equaled
+                            <b>{{report?.reportContent?.remainingStart}} MD</b>.
+                            At the moment remaining time stands at <b>{{sprint?.sumOfRemaining}} MD</b>.
+                            <br>
+                            Work logged in this sprint is equal to
+                            <b>{{report?.reportContent?.sumOfWorklog}} hours</b>.
+                            <br>
+                            <b>{{report?.reportContent?.tasksIdAddedInSprint?.length}}</b> tasks were added after sprint
+                            had
+                            started.
+                            <br>
+                            <b>{{report?.reportContent?.tasksUnDone?.length}}</b> tasks haven't been finished yet.
+                            <br>
+                            <b>{{report?.reportContent?.tasksIdDone?.length}}</b> tasks were done.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end of body of report-->
+
+        </div>
+    </div>
+    <div *ngIf="!report && sprintId !=0">
+        Report does not exist
+    </div>
+    <div *ngIf="!report && sprintId == 0 && !activeSprintExist">
+            Active sprint for selected group does not exist
+    </div>
+</div>

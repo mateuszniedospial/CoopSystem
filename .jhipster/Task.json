@@ -1,0 +1,147 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "sprint",
+            "otherEntityName": "sprint",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "task"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "parent",
+            "otherEntityName": "task",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "task"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "jGroup",
+            "otherEntityName": "jGroup",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "task"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "assignee",
+            "otherEntityName": "jUser",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "task"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "reporter",
+            "otherEntityName": "jUser",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "task"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "watchers",
+            "otherEntityName": "jUser",
+            "otherEntityRelationshipName": "task"
+        },
+        {
+            "relationshipName": "task",
+            "otherEntityName": "task",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "child",
+            "otherEntityName": "task",
+            "otherEntityRelationshipName": "task"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "juser",
+            "otherEntityName": "jUser",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "watchers",
+            "otherEntityName": "jUser",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "watch_task_id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "task"
+        },
+        {
+            "relationshipName": "historic_sprints",
+            "otherEntityName": "sprint",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "task"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "createdDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "modifyDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "lifeCycle",
+            "fieldType": "TaskLifeCycle",
+            "fieldValues": "TODO,INPROGRESS,TEST,REVIEWED,DONE"
+        },
+        {
+            "fieldName": "enviroment",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "title",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "TaskType",
+            "fieldValues": "TTASK,BUG,NABUG,STORY,EPIC,DOCUTASK,ADMINTASK,ADHOC",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "priority",
+            "fieldType": "TaskPriority",
+            "fieldValues": "MAJOR,MINOR,BLOCKER,TRIVIAL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "version",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "remainingTime",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "estimateTime",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170311112049",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "task",
+    "pagination": "no"
+}

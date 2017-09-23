@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "sprintJUserPrivilege",
+            "otherEntityName": "sprintJUserPrivilege",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "jUser"
+        },
+        {
+            "relationshipName": "task",
+            "otherEntityName": "task",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "jhiJUserId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170311112049",
+    "entityTableName": "j_user",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

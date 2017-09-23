@@ -1,0 +1,135 @@
+<p-growl [value]="msgs" sticky="sticky"></p-growl>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <hr>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="text-align: center;">
+                <button class="btn btn-outline-danger create-project-img" (click)="logout()">
+                    <span class="fa fa-sign-out"></span>
+                    <span>
+                    Logout
+                    </span>
+                </button>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="text-align: center;">
+                <ng-container *ngIf="projects">
+                    <h3 style="text-align: center">
+                        <b>Projects Section</b>
+                    </h3>
+                </ng-container>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="text-align: center;">
+                <button
+                    [routerLink]="['../']"
+                    type="button"
+                    class="btn btn-outline-warning">
+                    <span class="fa fa-share"></span>
+                    <span class="hidden-md-down">Account main page</span>
+                </button>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">
+                <div class="bs-callout bs-callout-default">
+                    <!--New project section-->
+                    <h5>Existing Projects</h5>
+                    To see all existing projects use the below button:
+                    <div>
+                        <br>
+                        <button class="btn btn-outline-primary create-project" [routerLink]="['/project/all/view']">
+                            <span class="fa fa-archive"></span>
+                            <span>
+                                Existing Projects
+                                </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="text-align: center">
+                <div class="bs-callout bs-callout-default">
+                    <!--New project section-->
+                    <h5>New Project</h5>
+                    To create new project use the below button:
+                    <div>
+                        <br>
+                        <button class="btn btn-outline-success create-project" [routerLink]="['/', { outlets: { popup: ['project-new'] } }]">
+                            <span class="fa fa-archive"></span>
+                            <span>
+                                New Project
+                                </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <ng-container *ngIf="projects?.length == 0">
+            <div class="bs-callout bs-callout-default">
+                <!--Section of my projects -->
+                <h5>Projects</h5>
+                <br>
+
+                 <span style="word-wrap: break-word;">
+                    There are no projects or You do not yet belong to any of project groups.<br>
+                    Create your own project and a group or join an existing one!
+                </span>
+
+            </div>
+        </ng-container>
+        <ng-container *ngIf="projects?.length > 0">
+
+                <div class="bs-callout bs-callout-default">
+                <!--Section of my projects -->
+                    <h5>Projects</h5>
+                    You are currently working on:
+                    <br>
+
+                    <ng-container *ngIf="projects?.length > 0">
+                        <ng-container *ngFor="let project of projects; trackBy: trackId">
+                            <br>
+                            <p-panel>
+                                <p-header>
+                                    <div class="ui-helper-clearfix">
+                                        <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:8px"><h5><b>{{project?.name}}</b></h5></span>
+                                        <button class="btn btn-outline-primary float-xs-right create-project" [routerLink]="['/project', project?.id]">
+                                        <span class="fa fa-eye"></span>
+                                        <span>
+                                            View
+                                        </span>
+                                        </button>
+                                    </div>
+                                </p-header>
+                                <div class="row">
+                                    <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="text-align: center;">
+                                        <ng-container *ngIf="!projectsImgMap[project?.id]">
+                                            <img src="users.png" alt="Project Img" class="img-thumbnail project-main-img-size"/>
+                                        </ng-container>
+                                        <ng-container *ngIf="projectsImgMap[project?.id]">
+                                            <img class="img-thumbnail project-main-img-size" [src]="'data:' + projectsImgMap[project?.id]?.contentContentType + ';base64,' + projectsImgMap[project?.id]?.content" alt="Project Img"/>
+                                        </ng-container>
+                                    </div>
+                                    <div class="col-lg-11 col-md-11 col-sm-12 col-xs-12">
+                                        <div>
+                                            Description
+                                        </div>
+                                        <hr>
+                                        <span style="word-wrap: break-word">
+                                             {{project?.description}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </p-panel>
+
+                        </ng-container>
+                    </ng-container>
+
+                </div>
+
+        </ng-container>
+    </div>
+</div>

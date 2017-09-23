@@ -1,0 +1,28 @@
+canvas {
+    background:#fff;
+    border:1px solid #ccc;
+}
+
+.card {
+    margin-top:-20px;
+}
+.card-header {
+    /*border: 1px solid rgba(179, 181, 185, 0.57);*/
+}
+
+.card-block {
+    border: 1px solid rgba(179, 181, 185, 0.57);
+    border-top: none;
+}
+
+.task-done{
+    background-color: #bcf8ae;
+}
+
+.task-undone {
+    background-color: #cbe7ff;
+}
+
+.task-added-during-the-sprint {
+    background-color: #ffd8da;
+}
