@@ -15,8 +15,11 @@ Having the data model prepared we started the project using JHipster service to 
 However, all available functions and front-end of the system were designed and developed by us.
 
 CoopSystem was written using following tools/frameworks:
+
 BACK-END: Java | Spring REST Framework, Spring Boot, Spring-Security, JPA (Hibernate implementation) + DB (PostgreSQL),
+
 FRONT-END: TypeScript | Angular2.0 + PrimeNG + Bootstrap + HTML5 + CSS3,
+
 ADDITIONAL TOOLS: Apache Maven, NodeJS
 
 As mentioned JHipster was also used at the start to generate base of the project with appropriate tools connected.
